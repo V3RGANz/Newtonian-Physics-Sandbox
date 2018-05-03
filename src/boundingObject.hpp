@@ -1,8 +1,5 @@
-// #include <libgeodecomp.h>
+#include <libgeodecomp.h>
 #include <list>
-
-template<int>
-class FloatCoord;
 
 class BoundingObject
 {
