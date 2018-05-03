@@ -23,23 +23,10 @@ Bodies classes, initializers, writer.
 Just interfaces with logical base with minimal 
 implementation.
 ``` 
+##### Logic development
 
-
-<script type="text/javascript">
-function showSpoiler(obj)
-    {
-    var inner = obj.parentNode.getElementsByTagName("div")[0];
-    if (inner.style.display == "none")
-        inner.style.display = "";
-    else
-        inner.style.display = "none";
-    }
-    </script>
-<div class="spoiler">
-    <input type="button" onclick="showSpoiler(this);" value="Logic development" />
-    <div class="inner" style="display:none;">
-    <samp>
-Interfaces : Shape, CollisionBody, BoundingObject
+**Interfaces** : Shape, CollisionBody, BoundingObject
+```c++
 Shape 	// at this stage it may seem that there is no point in this
        // but it is for more complex bodies which shapes != bounding Objects
        // philosophical reasoning : maybe we should make boundingObjectTree 		
@@ -62,11 +49,10 @@ CollisionBody
 BoundingObject
     usability:
 	       gives collisions with other bounding objects, if any
-
-Implementations: Shpere, BoundingSphere, ComposedSphereCB
-
+```
+**Implementations** : Shpere, BoundingSphere, ComposedSphereCB
+```c++
 Shpere : public Shape
 BoundingSphere : public BoundingObject 
 ComposedSphereCB : public CollisionBody
-        </samp>
-    </div>
+```
