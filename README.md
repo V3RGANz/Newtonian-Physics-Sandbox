@@ -14,7 +14,7 @@ writing a large number of irrelevant code.
 ### Result Demo
  _there will be result_
 
-### Progress
+### Progress blog
 
 #### Upcoming deadline: May 20:
 ```
@@ -23,3 +23,22 @@ Bodies classes, initializers, writer.
 Just interfaces with logical base with minimal 
 implementation.
 ```
+
+Logic development. 
+
+
+<script type="text/javascript" src=">
+function showSpoiler(obj)
+    {
+    var inner = obj.parentNode.getElementsByTagName("div")[0];
+    if (inner.style.display == "none")
+        inner.style.display = "";
+    else
+        inner.style.display = "none";
+    }
+    </script>
+<div class="spoiler">
+    <input type="button" onclick="showSpoiler(this);" value="Show/Hide" />
+    <div class="inner" style="display:none;">
+    This is a spoiler!
+    </div>
