@@ -11,6 +11,19 @@ model scene in Blender, export it in text format and pass as
 argument to the command). The user uses domain terms, rather than 
 writing a large number of irrelevant code.
 
+### Result Demo
+ _there will be result_
+
+### Progress
+
+#### Upcoming deadline: May 20:
+```
+Basic design of the sandbox. 
+Bodies classes, initializers, writer. 
+Just interfaces with logical base with minimal 
+implementation.
+```
+
 ```markdown
 Syntax highlighted code block
 
