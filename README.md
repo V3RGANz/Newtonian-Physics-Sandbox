@@ -27,7 +27,7 @@ implementation.
 Logic development. 
 
 
-<script type="text/javascript" src=">
+<script type="text/javascript">
 function showSpoiler(obj)
     {
     var inner = obj.parentNode.getElementsByTagName("div")[0];
