@@ -25,34 +25,25 @@ implementation.
 ``` 
 ##### Logic development
 
-**Interfaces** : Shape, CollisionBody, BoundingObject
+**Interfaces** : Shape, CollisionBody, BoundingObject, BoundingObjectTree
 ```c++
-Shape 	// at this stage it may seem that there is no point in this
+Shape  // at this stage it may seem that there is no point in this
        // but it is for more complex bodies which shapes != bounding Objects
        // philosophical reasoning : maybe we should make boundingObjectTree 		
        // contain bounding of any shape and then this class really will lose
        // relevance.
 
-template<class _BoundingObject>
-BoundingObjectTree
-    Contains:
-        class Node { _BoundingObject current; list<_BoundingObject> childs }; // the tree itself
-        Node // head of tree
-    usability:
-        searching collisions (going down the tree narrowing the margin of error)
+BoundingObject // unit of collisions detection (with other bounding objects)
 
-CollisionBody
-    Contains:
-	       BoundingObjectTree<BoundingObject>
-	       Shape
+BoundingObjectTree // template class with BoundingObject parameter
+		   // made for searching collisions (going down the tree narrowing the margin of error)       
 
-BoundingObject
-    usability:
-	       gives collisions with other bounding objects, if any
+CollisionBody  // Contains BoundingObjectTree and Shape, as well as all physical quantities (e.g. velocity, pos and
+	       // other mentioned in proposal)
 ```
 **Implementations** : Shpere, BoundingSphere, ComposedSphereCB
 ```c++
-Shpere : public Shape
-BoundingSphere : public BoundingObject 
+Shpere 		 : public Shape
+BoundingSphere   : public BoundingObject 
 ComposedSphereCB : public CollisionBody
 ```
