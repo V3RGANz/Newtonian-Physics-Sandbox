@@ -1,11 +1,10 @@
+#include <libgeodecomp.h>
 #include <list>
+#include "collision.hpp"
 
 class Tensor
 {
 };
-
-template<int>
-class FloatCoord;
 
 template<class Shape>
 class CollisionBody
@@ -17,7 +16,7 @@ class CollisionBody
     // template <typename ITERATOR>
     // virtual void searchCollisions(const ITERATOR &begin, const ITERATOR &end);
     virtual void detectCollision(CollisionBody &cBody) = delete;
-    virtual void resolveCollision(CollisionBody &cBody) = delete;
+    virtual void resolveCollision(Collision& collision) = delete;
     virtual bool wasConsidered() = delete;
     virtual FloatCoord<3> getPosition() = delete;
     virtual FloatCoord<3> getVelocity() = delete;
