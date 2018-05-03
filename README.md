@@ -17,12 +17,12 @@ writing a large number of irrelevant code.
 ### Progress blog
 
 #### Upcoming deadline: May 20:
-
-> Basic design of the sandbox. 
-> Bodies classes, initializers, writer. 
-> Just interfaces with logical base with minimal 
-> implementation.
-
+```
+ Basic design of the sandbox.
+ Bodies classes, initializers, writer. 
+ Just interfaces with logical base with minimal 
+ implementation.
+```
 ##### Logic development
 
 **Interfaces** : Shape, CollisionBody, BoundingObject, BoundingObjectTree
