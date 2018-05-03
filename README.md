@@ -22,9 +22,7 @@ Basic design of the sandbox.
 Bodies classes, initializers, writer. 
 Just interfaces with logical base with minimal 
 implementation.
-```
-
-Logic development. 
+``` 
 
 
 <script type="text/javascript">
@@ -38,7 +36,37 @@ function showSpoiler(obj)
     }
     </script>
 <div class="spoiler">
-    <input type="button" onclick="showSpoiler(this);" value="Show/Hide" />
+    <input type="button" onclick="showSpoiler(this);" value="Logic development" />
     <div class="inner" style="display:none;">
-    This is a spoiler!
+    <code>
+Interfaces : Shape, CollisionBody, BoundingObject
+Shape 	// at this stage it may seem that there is no point in this
+       // but it is for more complex bodies which shapes != bounding Objects
+       // philosophical reasoning : maybe we should make boundingObjectTree 		
+       // contain bounding of any shape and then this class really will lose
+       // relevance.
+
+template<class _BoundingObject>
+BoundingObjectTree
+    Contains:
+        class Node { _BoundingObject current; list<_BoundingObject> childs }; // the tree itself
+        Node // head of tree
+    usability:
+        searching collisions (going down the tree narrowing the margin of error)
+
+CollisionBody
+    Contains:
+	       BoundingObjectTree<BoundingObject>
+	       Shape
+
+BoundingObject
+    usability:
+	       gives collisions with other bounding objects, if any
+
+Implementations: Shpere, BoundingSphere, ComposedSphereCB
+
+Shpere : public Shape
+BoundingSphere : public BoundingObject 
+ComposedSphereCB : public CollisionBody
+        </code>
     </div>
