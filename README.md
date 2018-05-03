@@ -38,7 +38,7 @@ function showSpoiler(obj)
 <div class="spoiler">
     <input type="button" onclick="showSpoiler(this);" value="Logic development" />
     <div class="inner" style="display:none;">
-    <code>
+    <samp>
 Interfaces : Shape, CollisionBody, BoundingObject
 Shape 	// at this stage it may seem that there is no point in this
        // but it is for more complex bodies which shapes != bounding Objects
@@ -68,5 +68,5 @@ Implementations: Shpere, BoundingSphere, ComposedSphereCB
 Shpere : public Shape
 BoundingSphere : public BoundingObject 
 ComposedSphereCB : public CollisionBody
-        </code>
+        </samp>
     </div>
