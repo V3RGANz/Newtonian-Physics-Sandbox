@@ -12,7 +12,7 @@ class CollisionBody
   public:
     typedef Shape myShape;
     template <typename HOOD>
-    void update(const HOOD &hood, const int nanoStep) = delete;
+    void update(const HOOD &hood, const int nanoStep);
     // template <typename ITERATOR>
     // virtual void searchCollisions(const ITERATOR &begin, const ITERATOR &end);
     virtual void detectCollision(CollisionBody &cBody) = delete;
