@@ -1,5 +1,9 @@
+#ifndef BOUNDING_OBJECT_TREE_HEADER
+#define BOUNDING_OBJECT_TREE_HEADER
+
 #include <list>
 #include "boundingObject.hpp"
+using namespace LibGeoDecomp;
 
 template <typename BoundingObject>
 class BoundingObjectTree
@@ -47,3 +51,5 @@ template <>
 class BoundingObjectTree<BoundingSphere>
 {
 };
+
+#endif // !BOUNDING_OBJECT_TREE_HEADER

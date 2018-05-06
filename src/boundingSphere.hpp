@@ -1,13 +1,19 @@
+#ifndef BOUNDING_SPHERE_HEADER
+#define BOUNDING_SPHERE_HEADER
+
 #include "boundingObject.hpp"
+using namespace LibGeoDecomp;
 
 class BoundingSphere : public BoundingObject
 {
 public:
-  virtual FloatCoord<3> getLastCollision() override
+  virtual FloatCoord<3> 
+  getLastCollision() override
   {
-    
+
   }
-  virtual void updatePosition(FloatCoord<3> externalBodyPos) override
+  virtual void 
+  updatePosition(FloatCoord<3> externalBodyPos) override
   {
     position = attachmentPoint + externalBodyPos;
   }
@@ -27,18 +33,15 @@ private:
   FloatCoord<3> position;
   // relative location in Object's reference system
   FloatCoord<3> attachmentPoint;
-  FloatCoord<3> pos;
   FloatCoord<3> lastCollision;
 };
 
 template<>
   bool BoundingSphere::detectCollision<BoundingSphere>(BoundingSphere& other){
-    FloatCoord<3> relativeVector = (pos - other.pos);
-    if (relativeVector.length() < radius + other.radius) {
-      lastCollision = relativeVector * (radius / relativeVector.length());
-      otherCollison = lastCollision - relativeVector;
-      other.writeCollison(otherCollision);
+    if ((position - other.position).length() < radius + other.radius) {
       return true;
     }
     return false;
   }
+
+#endif // !BOUNDING_SPHERE_HEADER

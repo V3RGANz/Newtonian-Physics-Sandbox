@@ -43,7 +43,7 @@ CollisionBody  // Contains BoundingObjectTree and Shape, as well as all physical
 ```
 **Implementations** : Shpere, BoundingSphere, ComposedSphereCB
 ```c++
-Shpere 		 : public Shape
+Shpere           : public Shape
 BoundingSphere   : public BoundingObject 
 ComposedSphereCB : public CollisionBody
 ```
