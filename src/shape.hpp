@@ -5,6 +5,9 @@
 #include "collision.hpp"
 using namespace LibGeoDecomp;
 
+
+// FIX ME: useless on that stage
+
 class Shape {
   virtual bool detectCollision(Shape& other);
   virtual Collision<Shape> getLastCollision();

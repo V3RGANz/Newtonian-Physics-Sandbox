@@ -4,7 +4,7 @@
 #include <libgeodecomp.h>
 #include <list>
 #include "collision.hpp"
-#include "cell"
+#include "cell.hpp"
 using namespace LibGeoDecomp;
 
 /**
@@ -14,13 +14,10 @@ class Tensor
 {
 };
 
-
-
-template<class Shape>
 class CollisionBody
 {
   public:
-    typedef Shape myShape;
+    Shape myShape;
     virtual void update(const NPScell& hood, const int nanostep);
     virtual void detectCollision(CollisionBody &cBody) = delete;
     virtual void resolveCollision(Collision& collision) = delete;

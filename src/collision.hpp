@@ -5,7 +5,7 @@ using namespace LibGeoDecomp;
 
 template<class Shape>
 struct Collision {
-  CollisionBody<Shape>& other;
+  CollisionBody& other;
   //relative position of collision;
   FloatCoord<3> pos;
 };
