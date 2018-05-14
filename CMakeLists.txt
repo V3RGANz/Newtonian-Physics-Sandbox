@@ -16,5 +16,6 @@ add_executable(Newtonian_Physics_Sandbox
         src/collision.hpp
         src/collisionBody.hpp
         src/composedSpheresCB.hpp
-        
+        src/collisionDetection.hpp
+        src/collisionTreeDetection.hpp
         )

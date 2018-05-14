@@ -4,32 +4,38 @@
 
 class CollisionDetection {
 public:
-  template<class shape1, class shape2>
-  bool detectCollision(shape1& first, shape2& second){
-    //FIXME: general case not implemented
+  //TODO: general case not implemented
+  template<class body1, class body2>
+  bool detectCollision(body1& first, body2& second){
   }
 
   FloatCoord<3> getFirstCollision(){
-    return shape1CollisionPoint;
+    return body1CollisionPoint;
   }
 
   FloatCoord<3> getSecondCollision(){
-    return shape2CollisionPoint;
+    return body2CollisionPoint;
   }
 
 private:
-  FloatCoord<3> shape1CollisionPoint;
-  FloatCoord<3> shape2CollisionPoint;
+  FloatCoord<3> body1CollisionPoint;
+  FloatCoord<3> body2CollisionPoint;
 };
 
-template<>
-CollisionDetection::detectCollision<BoundingSphere, BoundingSphere>(BoundingSphere1&, BoundingSphere2&){
-  FloatCoord<3> relativeVector = (BoundingSphere1.position - BoundingSphere2.position);
+template<> bool CollisionDetection::
+detectCollision<BoundingSphere, BoundingSphere>(BoundingSphere& boundingSphere1, BoundingSphere& boundingSphere2){
+  FloatCoord<3> relativeVector = (boundingSphere1.getPosition() - boundingSphere2.getPosition());
   if (relativeVector.length() < radius + other.radius) {
-    shape1CollisionPoint = relativeVector * (radius / relativeVector.length()); // maybe better use relativeVector - other.radius?
-    shape2CollisionPoint = -relativeVector * (other.radius / relativeVector.length());
+    body1CollisionPoint = relativeVector * (radius / relativeVector.length()); // maybe better use relativeVector - other.radius?
+    body2CollisionPoint = -relativeVector * (other.radius / relativeVector.length());
     return true;
   }
   return false;
 }
 
+// TODO: general spec
+template<> bool
+CollisionDetection::
+detectCollision<BoundingObject, BoundingObject>(BoundingObject1& boundingObject1, BoundingObject2& boundingObject2){
+  return false;
+}

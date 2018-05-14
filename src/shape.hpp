@@ -1,47 +1,49 @@
 #ifndef SHAPE_HEADER
 #define SHAPE_HEADER
 
-#include <libgeodecomp.h>
-#include "collision.hpp"
-using namespace LibGeoDecomp;
+// #include<tuple>
+
+ #include <libgeodecomp.h>
+ #include "collision.hpp"
+ using namespace LibGeoDecomp;
 
 
 // FIX ME: useless on that stage
 
-class Shape {
-  virtual bool detectCollision(Shape& other);
-  virtual Collision<Shape> getLastCollision();
-};
-
-class Sphere : public Shape {
+class SphereShape{
   template<class OtherShape>
   bool detectCollision(OtherShape& otherShape){
     // FIXME: there should be general specialization
   }
-  virtual Collision<Shape> getLastCollision() override{
+  FloatCoord<3> getLastCollision(){
+    return lastCollision;
+  }
+  FloatCoord<3> getOtherLastCollision(){
+    return otherCollision;
   }
 
 private:
   double radius;
-  Collision<Shape> lastCollision;
-  template<class OtherShape>
-  void writeCollison(Collision<OtherShape> collision){
-    lastCollision = collision;
-  }
+    FloatCoord<3> lastCollision;
+    FloatCoord<3> otherCollision;
+  //  template<class OtherShape>
+//  void writeCollision(Collision collision){
+//    lastCollision = collision;
+//  }
   FloatCoord<3> position;
 };
 
 template<>
-bool Sphere::detectCollision<Sphere>(Sphere& other){
-  FloatCoord<3> relativeVector = (position - other.position);
+bool SphereShape::detectCollision<SphereShape>(SphereShape& other){
+  FloatCoord<3> relativeVector = (other.position - position);
     if (relativeVector.length() < radius + other.radius) 
     {
-      lastCollision = { 
-                        other, 
-                        relativeVector * (radius / relativeVector.length())
-                      };
-      otherCollisionPos = lastCollision - relativeVector;
-      other.writeCollison({*this, otherCollisionPos});
+//      lastCollision = {
+//                        other,
+//                        relativeVector * (radius / relativeVector.length())
+//                      };
+      lastCollision = relativeVector * (radius / relativeVector.length()); // maybe better use just relativeVector ?
+      otherCollision = - relativeVector * (other.radius / relativeVector.length());
       return true;
     }
     return false;
