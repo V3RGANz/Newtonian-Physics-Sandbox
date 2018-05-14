@@ -3,21 +3,30 @@
 
 #include <list>
 #include "boundingObject.hpp"
+#include "collisionDetection.hpp"
 using namespace LibGeoDecomp;
 
+// TODO: need to make possible detect collisions between arbitrary objects
 template <typename BoundingObject>
 class BoundingObjectTree
 {
 public:
   FloatCoord<3> detectCollision(FloatCoord<3> externalBodyPos, BoundingObjectTree& otherBoundObjTree)
   {
-    std::list<Collision> detected = head.traverse(externalBodyPos, otherBoundObjTree.head);
+    std::list<FloatCoord<3> > detected = head.traverse(externalBodyPos, otherBoundObjTree.head.nodes);
     collisionPoints.push_back(detected);
-    //WARNING: Fix collosion list with relative to other pbj
-    otherBoundObjTree.push_back(detected);
-  }
+    //FIXME: Fix collision list with relative to other pos
+    otherBoundObjTree.collisionPoints.push_back(detected);
+  };
 
 private:
+
+  void recvCollisions(std::list<FloatCoord<3> > detectedCollisions){
+    collisionPoints.push_back(detectedCollisions);
+    for (auto& collision : collisionPoints) {
+      collision = -collision;
+    }
+  }
 
   /**
    * The tree class itself 
@@ -41,27 +50,36 @@ private:
      * 
      * @return list of collisions inside of node's bounding object
      */
-    std::list<Collision> traverse(FloatCoord<3> externalBodyPos, std::list<Node&> otherBodyConsideringNodes) {
+    std::list<FloatCoord<3> > traverse(FloatCoord<3> externalBodyPos, std::list<Node> otherBodyConsideringNodes) {
       localCollisionPoints.clear();
       boundingObject.updatePosition(externalBodyPos);
       for (Node& otherNode : otherBodyConsideringNodes)
-      if (boundingObject.detectCollision(otherBodyConsideringNodes)) {
-        if (nodes.empty()) {
-          localCollisionPoints.push_back(boundingObject.getLastCollision());
-        }
-        for (auto &node : nodes) {
-          localCollisionPoints.push_back(node.traverse(externalBodyPos, otherNode.nodes));
+      {
+        CollisionDetection collisionDetection;
+        if (collisionDetection.detectCollision<BoundingObject, BoundingObject>(boundingObject, otherNode.boundingObject)) {
+          if (nodes.empty()) {
+            localCollisionPoints.push_back(boundingObject.getLastCollision());
+          }
+          for (auto &node : nodes) {
+            localCollisionPoints.push_back(node.traverse(externalBodyPos, otherNode.nodes));
+          }
         }
       }
-      return localCollisionPoints
+      return localCollisionPoints;
     }
-    std::list<Collision> localCollisionPoints;
+    std::list<FloatCoord<3> > localCollisionPoints;
     BoundingObject boundingObject;
     std::list<Node> nodes;
-    std::list<Node&> detectedNodes;
+//    std::list<Node&> detectedNodes;
   };
-  std::list<Collision > collisionPoints;
+  std::list<FloatCoord<3> > collisionPoints;
   Node head;
+};
+
+
+template <>
+class BoundingObjectTree<BoundingSphere>
+{
 };
 
 #endif // !BOUNDING_OBJECT_TREE_HEADER

@@ -1,9 +1,10 @@
 #ifndef COLLISION_HEADER
 #define COLLISION_HEADER
-#include "collisionBody.hpp"
+#include <libgeodecomp.h>
 using namespace LibGeoDecomp;
 
-template<class Shape>
+class CollisionBody;
+
 struct Collision {
   CollisionBody& other;
   //relative position of collision;

@@ -1,0 +1,8 @@
+#include "../src/boundingObject.hpp"
+#include "../src/boundingObjectTree.hpp"
+#include "../src/boundingSphere.hpp"
+#include "../src/cell.hpp"
+#include "../src/collision.hpp"
+#include "../src/collisionBody.hpp"
+#include "../src/composedSpheresCB.hpp"
+#include "../src/world.hpp"

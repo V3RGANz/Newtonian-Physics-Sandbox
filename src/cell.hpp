@@ -2,8 +2,12 @@
 #define NPS_CELL_HEADER
 #include <list>
 #include <libgeodecomp.h>
-#include "collisionBody.hpp"
 
-typedef NPScell BoxCell<std::list<CollisionBody> >
+using namespace LibGeoDecomp;
+
+class CollisionBody;
+
+// there is a problem
+typedef BoxCell<std::list<CollisionBody> > NPScell;
 
 #endif // !NPS_CELL_HEADER

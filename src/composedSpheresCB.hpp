@@ -2,12 +2,14 @@
 #define COMPOSEDSPHERES_CB_HEADER
 
 #include "collisionBody.hpp"
+#include "shape.hpp"
 
-template<class Shape>
-class ComposedSpheresCB : public CollisionBody<Shape>
+class ComposedSpheresCB : public CollisionBody
 {
-  private:
-    std::list<Shape> spheres;
+public:
+
+private:
+  std::list<SphereShape> spheres;
 };
 
 #endif // !COMPOSEDSPHERES_CB_HEADER
