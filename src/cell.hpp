@@ -7,7 +7,7 @@ using namespace LibGeoDecomp;
 
 class CollisionBody;
 
-// there is a problem
+// FIXME: there is a problem
 typedef BoxCell<std::list<CollisionBody> > NPScell;
 
 #endif // !NPS_CELL_HEADER

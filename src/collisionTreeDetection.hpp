@@ -1,7 +1,7 @@
 #include "boundingObjectTree.hpp"
 
 
-// this class shall fix problem described in boundingObjectTree.hpp
+// TODO: this class shall fix problem described in boundingObjectTree.hpp
 
 template<class BoundingObject1, class BoundingObject2>
 class CollisionTreeDetection{

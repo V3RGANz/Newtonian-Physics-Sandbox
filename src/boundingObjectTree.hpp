@@ -31,7 +31,8 @@ private:
    * The tree class itself 
    */
   struct Node {
-    // FIXME: maybe need to get rid of recursive algorithm, because externalBodyPos is invariant
+    // FIXME: other's body external position not taken into account
+    // TODO: maybe need to get rid of recursive algorithm, because externalBodyPos is invariant
     /**
      * Localising and make simplier collision detection
      * 
