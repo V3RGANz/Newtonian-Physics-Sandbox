@@ -25,9 +25,9 @@ private:
 template<> bool CollisionDetection::
 detectCollision<BoundingSphere, BoundingSphere>(BoundingSphere& boundingSphere1, BoundingSphere& boundingSphere2){
   FloatCoord<3> relativeVector = (boundingSphere1.getPosition() - boundingSphere2.getPosition());
-  if (relativeVector.length() < radius + other.radius) {
-    body1CollisionPoint = relativeVector * (radius / relativeVector.length()); // maybe better use relativeVector - other.radius?
-    body2CollisionPoint = -relativeVector * (other.radius / relativeVector.length());
+  if (relativeVector.length() < boundingSphere1.getRadius() + boundingSphere2.getRadius()) {
+    body1CollisionPoint = relativeVector * (boundingSphere1.getRadius() / relativeVector.length()); // maybe better use relativeVector - other.radius?
+    body2CollisionPoint = -relativeVector * (boundingSphere2.getRadius()/ relativeVector.length());
     return true;
   }
   return false;
@@ -36,6 +36,6 @@ detectCollision<BoundingSphere, BoundingSphere>(BoundingSphere& boundingSphere1,
 // TODO: general spec
 template<> bool
 CollisionDetection::
-detectCollision<BoundingObject, BoundingObject>(BoundingObject1& boundingObject1, BoundingObject2& boundingObject2){
+detectCollision<BoundingObject, BoundingObject>(BoundingObject& boundingObject1, BoundingObject& boundingObject2){
   return false;
 }

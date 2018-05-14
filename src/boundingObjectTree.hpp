@@ -2,6 +2,7 @@
 #define BOUNDING_OBJECT_TREE_HEADER
 
 #include <list>
+#include <libgeodecomp.h>
 #include "boundingObject.hpp"
 #include "collisionDetection.hpp"
 

@@ -18,6 +18,10 @@ public:
     return position;
   }
 
+  inline double getRadius(){
+    return radius;
+  }
+
 private:
   double radius;
   FloatCoord<3> position;
