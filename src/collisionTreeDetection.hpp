@@ -1,3 +1,6 @@
+#ifndef NEWTONIAN_PHYSICS_SANDBOX_COLLISIONTREEDETECTION_HPP
+#define NEWTONIAN_PHYSICS_SANDBOX_COLLISIONTREEDETECTION_HPP
+
 #include "boundingObjectTree.hpp"
 
 
@@ -20,3 +23,5 @@ private:
   BoundingObjectTree<BoundingObject1>& boundingObjectTree1;
   BoundingObjectTree<BoundingObject2>& boundingObjectTree2;
 };
+
+#endif //!NEWTONIAN_PHYSICS_SANDBOX_COLLISIONTREEDETECTION_HPP

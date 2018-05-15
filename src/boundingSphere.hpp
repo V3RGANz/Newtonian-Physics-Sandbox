@@ -1,5 +1,5 @@
-#ifndef BOUNDING_SPHERE_HEADER
-#define BOUNDING_SPHERE_HEADER
+#ifndef NEWTONIAN_PHYSICS_SANDBOX_BOUNDINGSPHERE_HPP
+#define NEWTONIAN_PHYSICS_SANDBOX_BOUNDINGSPHERE_HPP
 
 #include <libgeodecomp.h>
 #include "boundingObject.hpp"
@@ -10,7 +10,7 @@ using namespace LibGeoDecomp;
 class BoundingSphere : BoundingObject{
 public:
 
-  virtual void updatePosition(FloatCoord<3> externalBodyPos) override{
+  virtual void updatePosition(FloatCoord<3> externalBodyPos){
     position = attachmentPoint + externalBodyPos;
   }
 
@@ -29,4 +29,4 @@ private:
   FloatCoord<3> attachmentPoint;
 };
 
-#endif // !BOUNDING_SPHERE_HEADER
+#endif // !NEWTONIAN_PHYSICS_SANDBOX_BOUNDINGSPHERE_HPP

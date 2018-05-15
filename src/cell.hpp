@@ -1,5 +1,5 @@
-#ifndef NPS_CELL_HEADER
-#define NPS_CELL_HEADER
+#ifndef NEWTONIAN_PHYSICS_SANDBOX_CELL_HPP
+#define NEWTONIAN_PHYSICS_SANDBOX_CELL_HPP
 #include <list>
 #include <libgeodecomp.h>
 
@@ -10,4 +10,4 @@ class CollisionBody;
 // FIXME: there is a problem
 typedef BoxCell<std::list<CollisionBody> > NPScell;
 
-#endif // !NPS_CELL_HEADER
+#endif // !NEWTONIAN_PHYSICS_SANDBOX_CELL_HPP

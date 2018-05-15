@@ -1,5 +1,5 @@
-#ifndef COLLISION_BODY_HEADER
-#define COLLISION_BODY_HEADER
+#ifndef NEWTONIAN_PHYSICS_SANDBOX_COLLISIONBODY_HPP
+#define NEWTONIAN_PHYSICS_SANDBOX_COLLISIONBODY_HPP
 
 #include <libgeodecomp.h>
 #include <list>
@@ -38,4 +38,4 @@ public:
   virtual Tensor getAngVelocity() = delete;
 };
 
-#endif // !COLLISION_BODY_HEADER
+#endif // !NEWTONIAN_PHYSICS_SANDBOX_COLLISIONBODY_HPP

@@ -1,5 +1,5 @@
-#ifndef BOUNDING_OBJECT_HEADER
-#define BOUNDING_OBJECT_HEADER
+#ifndef NEWTONIAN_PHYSICS_SANDBOX_BOUNDING_OBJECT_HPP
+#define NEWTONIAN_PHYSICS_SANDBOX_BOUNDING_OBJECT_HPP
 
 #include <libgeodecomp.h>
 #include <list>
@@ -9,7 +9,7 @@ class BoundingObject
 {
 public:
   // need to be used if collision with outer bounding objects was detected
-  virtual void updatePosition(FloatCoord<3> externalBodyPos);
+  virtual void updatePosition(FloatCoord<3> externalBodyPos) = 0;
 };
 
-#endif // !BOUNDING_OBJECT_HEADER
+#endif // !NEWTONIAN_PHYSICS_SANDBOX_BOUNDING_OBJECT_HPP

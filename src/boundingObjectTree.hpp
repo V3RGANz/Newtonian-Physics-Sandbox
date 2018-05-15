@@ -1,5 +1,5 @@
-#ifndef BOUNDING_OBJECT_TREE_HEADER
-#define BOUNDING_OBJECT_TREE_HEADER
+#ifndef NEWTONIAN_PHYSICS_SANDBOX_BOUNDINGOBJECTTREE_HPP
+#define NEWTONIAN_PHYSICS_SANDBOX_BOUNDINGOBJECTTREE_HPP
 
 #include <list>
 #include <libgeodecomp.h>
@@ -14,7 +14,7 @@ class BoundingObjectTree {
 public:
   FloatCoord<3> detectCollision(FloatCoord<3> externalBodyPos, BoundingObjectTree &otherBoundObjTree) {
     std::list<FloatCoord<3> > detected = head.traverse(externalBodyPos, otherBoundObjTree.head.nodes);
-    collisionPoints.push_back(detected);
+    collisionPoints.splice(collisionPoints.end(), detected);
     //FIXME: Fix collision list with relative to other pos
     otherBoundObjTree.collisionPoints.push_back(detected);
   };
@@ -22,7 +22,7 @@ public:
 private:
 
   void recvCollisions(std::list<FloatCoord<3> > detectedCollisions) {
-    collisionPoints.push_back(detectedCollisions);
+    collisionPoints.splice(collisionPoints.end(), detectedCollisions);
     for (auto &collision : collisionPoints) {
       collision = -collision;
     }
@@ -61,7 +61,7 @@ private:
             localCollisionPoints.push_back(boundingObject.getLastCollision());
           }
           for (auto &node : nodes) {
-            localCollisionPoints.push_back(node.traverse(externalBodyPos, otherNode.nodes));
+            localCollisionPoints.splice(localCollisionPoints.end(), node.traverse(externalBodyPos, otherNode.nodes));
           }
         }
       }
@@ -86,4 +86,4 @@ template<>
 class BoundingObjectTree<BoundingSphere> {
 };
 
-#endif // !BOUNDING_OBJECT_TREE_HEADER
+#endif // !NEWTONIAN_PHYSICS_SANDBOX_BOUNDINGOBJECTTREE_HPP
