@@ -3,39 +3,51 @@
 
 #include <libgeodecomp.h>
 #include <list>
+#include <string>
 #include "collision.hpp"
 #include "cell.hpp"
+#include "tensor.hpp"
 
 using namespace LibGeoDecomp;
 
 /**
  * 3x3 matrix  
  */
-class Tensor {
-};
 
 //typename <class Shape>
 class CollisionBody {
 public:
-  virtual void update(const NPScell &hood, const int nanostep);
+  virtual void update(const NPScell &hood, const int nanostep) = 0;
 
-  virtual void detectCollision(CollisionBody &cBody) = delete;
+  virtual void detectCollision(CollisionBody &cBody) const = 0;
 
-  virtual void resolveCollision(Collision &collision) = delete;
+  virtual void resolveCollision(Collision &collision) = 0;
 
-  virtual bool wasConsidered() = delete;
+  virtual bool wasConsidered() const = 0;
 
-  virtual FloatCoord<3> getPosition() = delete;
+  virtual FloatCoord<3> getPosition() const = 0;
 
-  virtual FloatCoord<3> getVelocity() = delete;
+  virtual FloatCoord<3> getVelocity() const = 0;
 
-  virtual FloatCoord<3> getAcceleration() = delete;
+  virtual FloatCoord<3> getAcceleration() const = 0;
 
-  virtual double getMass() = delete;
+  virtual double getMass() const = 0;
 
-  virtual Tensor getOrientation() = delete;
+  virtual AngularVTensor<3> getOrientation() const = 0;
 
-  virtual Tensor getAngVelocity() = delete;
+  virtual AngularVTensor<3> getAngVelocity() const = 0;
+
+  virtual AngularVTensor<3> getInertialTensor() const = 0;
+
+  virtual void addVelocity() = 0;
+
+  virtual std::string toPOV() const = 0;
+
+  virtual friend std::ostream& operator<<(std::ostream& os, const CollisionBody& cb);
 };
+
+std::ostream& operator<<(std::ostream& os, const CollisionBody& cb){
+  os << cb.toPOV();
+}
 
 #endif // !NEWTONIAN_PHYSICS_SANDBOX_COLLISIONBODY_HPP

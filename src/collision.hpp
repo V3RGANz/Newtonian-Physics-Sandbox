@@ -3,6 +3,7 @@
 #include <libgeodecomp.h>
 using namespace LibGeoDecomp;
 
+
 class CollisionBody;
 
 struct Collision {
