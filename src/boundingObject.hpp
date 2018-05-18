@@ -8,8 +8,8 @@ using namespace LibGeoDecomp;
 class BoundingObject
 {
 public:
-  // need to be used if collision with outer bounding objects was detected
-  virtual void updatePosition(FloatCoord<3> externalBodyPos) = 0;
+    // need to be used if collision with outer bounding objects was detected
+    virtual void updatePosition(FloatCoord<3> externalBodyPos) = 0;
 };
 
 #endif // !NEWTONIAN_PHYSICS_SANDBOX_BOUNDING_OBJECT_HPP

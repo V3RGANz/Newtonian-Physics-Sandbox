@@ -15,39 +15,41 @@ using namespace LibGeoDecomp;
  */
 
 //typename <class Shape>
-class CollisionBody {
+class CollisionBody
+{
 public:
-  virtual void update(const NPScell &hood, const int nanostep) = 0;
+    virtual void update(const NPScell &hood, const int nanostep) = 0;
 
-  virtual void detectCollision(CollisionBody &cBody) const = 0;
+    virtual void detectCollision(CollisionBody &cBody) const = 0;
 
-  virtual void resolveCollision(Collision &collision) = 0;
+    virtual void resolveCollision(Collision &collision) = 0;
 
-  virtual bool wasConsidered() const = 0;
+    virtual bool wasConsidered() const = 0;
 
-  virtual FloatCoord<3> getPosition() const = 0;
+    virtual FloatCoord<3> getPosition() const = 0;
 
-  virtual FloatCoord<3> getVelocity() const = 0;
+    virtual FloatCoord<3> getVelocity() const = 0;
 
-  virtual FloatCoord<3> getAcceleration() const = 0;
+    virtual FloatCoord<3> getAcceleration() const = 0;
 
-  virtual double getMass() const = 0;
+    virtual double getMass() const = 0;
 
-  virtual AngularVTensor<3> getOrientation() const = 0;
+    virtual AngularVTensor<3> getOrientation() const = 0;
 
-  virtual AngularVTensor<3> getAngVelocity() const = 0;
+    virtual AngularVTensor<3> getAngVelocity() const = 0;
 
-  virtual AngularVTensor<3> getInertialTensor() const = 0;
+    virtual AngularVTensor<3> getInertialTensor() const = 0;
 
-  virtual void addVelocity() = 0;
+    virtual void addVelocity() = 0;
 
-  virtual std::string toPOV() const = 0;
+    virtual std::string toPOV() const = 0;
 
-  virtual friend std::ostream& operator<<(std::ostream& os, const CollisionBody& cb);
+    virtual friend std::ostream &operator<<(std::ostream &os, const CollisionBody &cb);
 };
 
-std::ostream& operator<<(std::ostream& os, const CollisionBody& cb){
-  os << cb.toPOV();
+std::ostream &operator<<(std::ostream &os, const CollisionBody &cb)
+{
+    os << cb.toPOV();
 }
 
 #endif // !NEWTONIAN_PHYSICS_SANDBOX_COLLISIONBODY_HPP

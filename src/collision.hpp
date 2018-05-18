@@ -6,11 +6,12 @@ using namespace LibGeoDecomp;
 
 class CollisionBody;
 
-struct Collision {
-  CollisionBody& first;
-  CollisionBody& second;
-  //relative position of collision;
-  FloatCoord<3> pos;
+struct Collision
+{
+    CollisionBody &first;
+    CollisionBody &second;
+    //relative position of collision;
+    FloatCoord<3> pos;
 };
 
 #endif // !NEWTONIAN_PHYSICS_SANDBOX_COLLISION_HPP
