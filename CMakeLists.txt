@@ -22,4 +22,4 @@ add_executable(Newtonian_Physics_Sandbox
         src/composedSpheresCB.hpp
         src/collisionDetection.hpp
         src/collisionTreeDetection.hpp
-        src/collisionResolve.hpp src/tensor.hpp src/writer.hpp)
+        src/collisionResolve.hpp src/tensor.hpp src/writer.hpp src/Initializer.hpp)

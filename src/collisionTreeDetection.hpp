@@ -6,6 +6,13 @@
 
 // TODO: this class shall fix problem described in boundingObjectTree.hpp
 
+/**
+ * Explores the objects for collision using bounding object tree
+ *
+ * @tparam BoundingObject1 first considering bounding Object
+ * @tparam BoundingObject2 second considering bounding Object
+ */
+
 template<class BoundingObject1, class BoundingObject2>
 class CollisionTreeDetection
 {

@@ -34,17 +34,17 @@ public:
 
     virtual double getMass() const = 0;
 
-    virtual AngularVTensor<3> getOrientation() const = 0;
+    virtual Matrix<3, 3> getOrientation() const = 0;
 
-    virtual AngularVTensor<3> getAngVelocity() const = 0;
+    virtual AngularVTensor<3, 3> getAngVelocity() const = 0;
 
-    virtual AngularVTensor<3> getInertialTensor() const = 0;
+    virtual InertialTensor<3, 3> getInertialTensor() const = 0;
 
-    virtual void addVelocity() = 0;
+    virtual void addVelocity(const FloatCoord<3>&) = 0;
 
     virtual std::string toPOV() const = 0;
 
-    virtual friend std::ostream &operator<<(std::ostream &os, const CollisionBody &cb);
+    friend std::ostream &operator<<(std::ostream &, const CollisionBody &);
 };
 
 std::ostream &operator<<(std::ostream &os, const CollisionBody &cb)
