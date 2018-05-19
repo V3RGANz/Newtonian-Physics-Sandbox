@@ -57,7 +57,7 @@ public:
     inline
     FloatCoord<3> operator*(const COORD<3> &other)
     {
-        FloatCoord<3> ret = 0;
+        FloatCoord<3> ret = FloatCoord<3>(0);
         for (int i = 0; i < DIM1; i++)
             for (int j = 0; j < DIM2; i++)
                 ret[i] += dims[i][j] * other[j];
@@ -322,6 +322,14 @@ class InertialTensor<3, 3>: public Matrix<3, 3>
 public:
 
     InertialTensor() = default;
+
+    InertialTensor(const Matrix<3, 3>& matrix) {
+        for (int i = 0; i < DIM1; ++i) {
+            for (int j = 0; j < DIM2; ++j) {
+                dims[i][j] = matrix[i][j];
+            }
+        }
+    }
 
     explicit InertialTensor(double scalar) : Matrix<3, 3>(scalar)
     {

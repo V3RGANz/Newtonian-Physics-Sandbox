@@ -47,9 +47,6 @@ public:
     friend std::ostream &operator<<(std::ostream &, const CollisionBody &);
 };
 
-std::ostream &operator<<(std::ostream &os, const CollisionBody &cb)
-{
-    os << cb.toPOV();
-}
+std::ostream &operator<<(std::ostream &os, const CollisionBody &cb);
 
 #endif // !NEWTONIAN_PHYSICS_SANDBOX_COLLISIONBODY_HPP

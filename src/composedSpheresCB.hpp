@@ -8,31 +8,9 @@ class ComposedSpheresCB: public CollisionBody
 {
 public:
 
-    std::string toPOV() const override
-    {
-        std::stringstream buf;
-        for (const Sphere &sphere : spheres)
-            buf <<
-                "sphere {\n"
-                "  <"
-                << sphere.pos[0] << ", "
-                << sphere.pos[1] << ", "
-                << sphere.pos[2] << ">, "
-                << sphere.radius << "\n"
-                <<
-                "  texture {\n"
-                "    pigment {color White}\n"
-                "    finish {phong 0.9 metallic}\n"
-                "  }\n"
-                "}\n";
+    std::string toPOV() const override;
 
-        return buf.str();
-    }
-
-    void addVelocity(const FloatCoord<3>& addDeltaV) override
-    {
-        deltaV += addDeltaV;
-    }
+    void addVelocity(const FloatCoord<3>& addDeltaV) override;
 
     inline
     void applyVelocity(void)
