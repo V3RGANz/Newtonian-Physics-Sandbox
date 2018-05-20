@@ -10,11 +10,6 @@
 
 using namespace LibGeoDecomp;
 
-/**
- * 3x3 matrix  
- */
-
-//typename <class Shape>
 class CollisionBody
 {
 public:

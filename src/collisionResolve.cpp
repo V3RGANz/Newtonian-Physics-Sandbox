@@ -12,7 +12,6 @@ CollisionResolve::CollisionResolve(Collision &collision)
     FloatCoord<3> N;
     AngularVTensor<3, 3> I;
 
-//FIXME
     InertialTensor<3, 3> I0 =
         cb1.getOrientation() *
         (cb1.getInertialTensor().getInversed()) *
@@ -31,5 +30,4 @@ CollisionResolve::CollisionResolve(Collision &collision)
             N * (I * cb2.getPosition().crossProduct(N)).crossProduct(cb2.getPosition());
 
     impulseMagnitude = numerator / denominator;
-//    cbodies[0].
 }
