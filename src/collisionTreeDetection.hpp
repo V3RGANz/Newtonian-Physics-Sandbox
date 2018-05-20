@@ -52,13 +52,13 @@ private:
                 } else {
                     for(auto& child : boundingObjectTree21.getChildren()){
                         child.getBoundingObject().updatePosition(externalBody2Pos);
-                        traverse(boundingObjectTree11, child);
+                        traverseSingleFirst(boundingObjectTree11.getBoundingObject(), child);
                     }
                 }
             } else if (boundingObjectTree21.getBoundingObject().getChildren().empty()) {
                 for (auto& child : boundingObjectTree11.getChildren()){
                     child.getBoundingObject().updatePosition(externalBody1Pos);
-                    traverse(child, boundingObjectTree21);
+                    traverseSingleSecond(child, boundingObjectTree21.getBoundingObject());
                 }
             } else {
                 for (auto& child1 : boundingObjectTree11.getChildren()){
@@ -67,6 +67,48 @@ private:
                         child2.getBoundingObject().updatePosition(externalBody2Pos);
                         traverse(child1, child2);
                     }
+                }
+            }
+        }
+    }
+
+    /*
+     * if first bounding object is leaf
+     * TODO: make more readable
+     */
+    void traverseSingleFirst(BoundingObject1& boundingObject1, BoundingObjectTree2& boundingObjectTree21){
+        CollisionDetection collisionDetection;
+        if (collisionDetection.detectCollision(boundingObject1,
+                                               boundingObjectTree21.getBoundingObject())) {
+            if (boundingObjectTree21.getChildren().empty()) {
+                firstCollisionPoints.push_back(collisionDetection.getFirstCollision());
+                secondCollisionPoints.push_back(collisionDetection.getSecondCollision());
+                return;
+            } else {
+                for(auto& child : boundingObjectTree21.getChildren()){
+                    child.getBoundingObject().updatePosition(externalBody2Pos);
+                    traverse(boundingObject1, child);
+                }
+            }
+        }
+    }
+
+    /*
+     * if second bounding object is leaf
+     * TODO: make more readable
+     */
+    void traverseSingleSecond(BoundingObjectTree1& boundingObjectTree11, BoundingObject2& boundingObject2){
+        CollisionDetection collisionDetection;
+        if (collisionDetection.detectCollision(boundingObjectTree11.getBoundingObject(),
+                                               boundingObject2)) {
+            if (boundingObjectTree11.getChildren().empty()) {
+                firstCollisionPoints.push_back(collisionDetection.getFirstCollision());
+                secondCollisionPoints.push_back(collisionDetection.getSecondCollision());
+                return;
+            } else {
+                for(auto& child : boundingObjectTree11.getChildren()){
+                    child.getBoundingObject().updatePosition(externalBody2Pos);
+                    traverse(child, boundingObject2);
                 }
             }
         }
