@@ -25,7 +25,7 @@ public:
     {}
 
     /**
-     * Searh collision between bounding objects;
+     * Search collision between bounding objects;
      * @param externalBody1Pos current position of body-owner of first bounding object
      * @param externalBody2Pos current position of body-owner of second bounding object
      */

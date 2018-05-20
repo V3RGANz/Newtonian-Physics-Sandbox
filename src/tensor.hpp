@@ -220,7 +220,7 @@ protected:
 
 /**
  *
- * InertiaTensor actually useful when we have simulations with angular
+ * AngularVTensor actually useful when we have simulations with angular
  * velocity. This is standard presentation of it a.k.a.
  * angular velocity tensor.
  *
