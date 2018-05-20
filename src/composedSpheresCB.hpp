@@ -2,7 +2,7 @@
 #define NEWTONIAN_PHYSICS_SANDBOX_COMPOSEDSPHERESCB_HPP
 
 #include "collisionBody.hpp"
-#include "shape.hpp"
+//#include "shape.hpp"
 
 class ComposedSpheresCB: public CollisionBody
 {

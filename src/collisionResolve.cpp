@@ -15,9 +15,12 @@ CollisionResolve::CollisionResolve(Collision &collision)
 //FIXME
     InertialTensor<3, 3> I0 =
         cb1.getOrientation() *
-            (cb1.getInertialTensor().getInversed()) *
-            (cb1.getOrientation().transpose());
-    AngularVTensor<3, 3> I1;
+        (cb1.getInertialTensor().getInversed()) *
+        (cb1.getOrientation().transpose());
+    AngularVTensor<3, 3> I1 =
+        cb2.getOrientation() *
+        (cb2.getInertialTensor().getInversed()) *
+        (cb2.getOrientation().transpose());
 
     FloatCoord<3> numerator = N.crossProduct(-contactVelocity * (1 + res));
     double denominator;
