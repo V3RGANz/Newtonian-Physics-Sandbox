@@ -338,34 +338,14 @@ public:
     template<template<int> class COORD>
     explicit InertialTensor(const COORD<3> &coord)
     {
-        for (int i = 0; i < DIM1; i++)
-            dims[i][i] = 0;
-
-        dims[0][1] = -coord[2];
-        dims[1][0] = coord[2];
-
-        dims[0][2] = coord[1];
-        dims[2][0] = -coord[1];
-
-        dims[1][2] = -coord[0];
-        dims[2][1] = coord[0];
+//TODO
     }
 
     template<template<int> class COORD>
     inline
     InertialTensor<3, 3> &operator=(const COORD<3> &coord)
     {
-        for (int i = 0; i < DIM1; i++)
-            dims[i][i] = 0;
-
-        dims[0][1] = -coord[2];
-        dims[1][0] = coord[2];
-
-        dims[0][2] = coord[1];
-        dims[2][0] = -coord[1];
-
-        dims[1][2] = -coord[0];
-        dims[2][1] = coord[0];
+//TODO
     }
 
     inline
