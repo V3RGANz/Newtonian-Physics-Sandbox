@@ -18,21 +18,24 @@ writing a large number of irrelevant code.
 
 ### Progress blog
 
+#### Upcoming Evaluations: June 11
+
+- Basic design of the sandbox.
+- Bodies classes, initializers, writer.
+- Just interfaces with logical base with minimal implementation.
+- Bodies classes implementation. Spheres case.
+- Collision detection
+- Collision resolving
+
 #### Upcoming deadline: May 20
 
-```none
-STATUS: 80% DONE.
-Basic design of the sandbox.
-Bodies classes, initializers, writer.
-Just interfaces with logical base with minimal
-implementation.
-```
+- Basic design of the sandbox.
+- Bodies classes, initializers, writer.
+- Just interfaces with logical base with minimal implementation.
 
 #### Next deadline: May 27
 
-```none
-Bodies classes implementation. Spheres case.
-```
+- Bodies classes implementation. Spheres case.
 
 #### Past deadlines
 
@@ -41,30 +44,33 @@ Bodies classes implementation. Spheres case.
 **Interfaces** : Shape, CollisionBody, BoundingObject, BoundingObjectTree
 
 ```c++
-Shape  // at this stage it may seem that there is no point in this
-       // but it is for more complex bodies which shapes != bounding Objects
-       // philosophical reasoning : maybe we should make boundingObjectTree
-       // contain bounding of any shape and then this class really will lose
-       // relevance.
+Shape                   // at this stage it may seem that there is no point in this
+                        // but it is for more complex bodies which shapes != bounding Objects
+                        // philosophical reasoning : maybe we should make boundingObjectTree
+                        // contain bounding of any shape and then this class really will lose
+                        // relevance.
 
-BoundingObject // unit of collisions detection (with other bounding objects)
+BoundingObject          // unit of collisions detection (with other bounding objects)
 
-BoundingObjectTree // template class with BoundingObject parameter
-                   // made for searching collisions (going down the tree narrowing the
-                   // margin of error)
+BoundingObjectTree      // template class with BoundingObject parameter
+                        // made for searching collisions (going down the tree narrowing the
+                        // margin of error)
 
-CollisionBody  // Contains BoundingObjectTree and Shape, as well as all physical
-               //quantities (e.g. velocity, pos and
-               // other mentioned in proposal)
+CollisionBody           // Contains BoundingObjectTree and Shape, as well as all physical
+                        //quantities (e.g. velocity, pos and
+                        // other mentioned in proposal)
 
-CollisionDetection // Need to clarify if there is collision between two bodies or not
-Collision          // Stores all necessary data about collision for further
-                   // handling it
+CollisionDetection      // Need to clarify if there is collision between two bodies or not
 
-CollisionResolve   // Need to handle occurred collision
+CollisionDetectionTree  // Search collisions between two BoundingObjectTrees
 
-Matrix, Tensors // Linear algebra objets needed for store physical quantities in
-                // handy form
+Collision               // Stores all necessary data about collision for further
+                        // handling it
+
+CollisionResolve        // Need to handle occurred collision
+
+Matrix, Tensors         // Linear algebra objets needed for store physical quantities in
+                        // handy form
 ```
 
 **Implementations** : Shpere, BoundingSphere, ComposedSphereCB
