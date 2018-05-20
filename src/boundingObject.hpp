@@ -5,6 +5,10 @@
 #include <list>
 using namespace LibGeoDecomp;
 
+/**
+ * Bounding object need to discard deliberately impossible collisions,
+ * because it much simpler for considering
+ */
 class BoundingObject
 {
 public:
