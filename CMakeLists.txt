@@ -28,4 +28,4 @@ add_executable(Newtonian_Physics_Sandbox
         src/Initializer.hpp
         src/composedSpheresCB.cpp
         src/collisionResolve.cpp
-        src/collisionBody.cpp)
+        src/collisionBody.cpp src/npsworld.cpp src/npsworld.hpp src/axisalignedboundingbox.cpp src/axisalignedboundingbox.hpp)
