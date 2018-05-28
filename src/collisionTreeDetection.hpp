@@ -34,6 +34,19 @@ public:
         this->externalBody2Pos = externalBody2Pos;
     }
 
+    bool hasUnhandldedCollisions(void) {
+        return !firstCollisionPoints.empty();
+    }
+
+    Collision getNextCollision(CollisionBody& first, const CollisionBody& second){
+        FloatCoord<3> pos1to2 = firstCollisionPoints.back();
+        FloatCoord<3> pos2to1 = secondCollisionPoints.back();
+        firstCollisionPoints.pop_back();
+        secondCollisionPoints.pop_back();
+        return {first, second, pos1to2, pos2to1};
+    }
+
+
 private:
     /**
      * Localising and make simpler collision detection

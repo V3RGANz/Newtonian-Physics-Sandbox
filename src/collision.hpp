@@ -8,10 +8,13 @@ class CollisionBody;
 
 struct Collision
 {
+    static const Collision emptyCollision = {};
     CollisionBody &first;
-    CollisionBody &second;
-    //relative position of collision;
-    FloatCoord<3> pos;
+    const CollisionBody &second;
+    //relative position of collision in fist body's system of reference;
+    FloatCoord<3> pos1to2;
+    //relative position of collision in second body's system of reference;
+    FloatCoord<3> pos2to1;
 };
 
 #endif // !NEWTONIAN_PHYSICS_SANDBOX_COLLISION_HPP
