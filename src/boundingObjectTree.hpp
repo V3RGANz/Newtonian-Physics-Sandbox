@@ -3,8 +3,7 @@
 
 #include <list>
 #include <libgeodecomp.h>
-#include "boundingObject.hpp"
-#include "collisionDetection.hpp"
+#include "boundingSphere.hpp"
 
 using namespace LibGeoDecomp;
 
@@ -16,11 +15,24 @@ template<class BoundingObject>
 class BoundingObjectTree
 {
 public:
-    BoundingObject& getBoundingObject(){
+    BoundingObject& getBoundingObject() {
         return boundingObject;
     }
+
+    const BoundingObject& getBoundingObject() const {
+        return boundingObject;
+    }
+
     const std::list<BoundingObjectTree<BoundingObject> >& getChildren() const {
         return nodes;
+    }
+
+    void updateBoundingsPositions(const FloatCoord<3>& externalBodyPos)
+    {
+        boundingObject.updatePosition(externalBodyPos);
+        for (auto& node : nodes){
+            node.updateBoundingsPositions(externalBodyPos);
+        }
     }
 private:
     BoundingObject boundingObject;
@@ -30,6 +42,48 @@ private:
 template<>
 class BoundingObjectTree<BoundingSphere>
 {
+public:
+
+    BoundingObjectTree() = default;
+
+    BoundingObjectTree(FloatCoord<3> center, double radius) : boundingObject(radius, center)
+    {
+    }
+
+    explicit BoundingObjectTree(std::list<BoundingObjectTree<BoundingSphere> > nodes) : nodes(std::move(nodes))
+    {
+    }
+
+    void setBoundingObject(const BoundingSphere &boundingObject)
+    {
+        BoundingObjectTree::boundingObject = boundingObject;
+    }
+
+    BoundingSphere& getBoundingObject() {
+        return boundingObject;
+    }
+
+    const BoundingSphere& getBoundingObject() const {
+        return boundingObject;
+    }
+
+    std::list<BoundingObjectTree<BoundingSphere> >& getChildren() {
+        return nodes;
+    }
+
+    const std::list<BoundingObjectTree<BoundingSphere> >& getChildren() const {
+        return nodes;
+    }
+
+    void updateBoundingsPositions(const FloatCoord<3>& externalBodyPos)
+    {
+        boundingObject.updatePosition(externalBodyPos);
+        for (auto& node : nodes)
+            node.updateBoundingsPositions(externalBodyPos);
+    }
+private:
+    BoundingSphere boundingObject;
+    std::list<BoundingObjectTree<BoundingSphere> > nodes;
 };
 
 #endif // !NEWTONIAN_PHYSICS_SANDBOX_BOUNDINGOBJECTTREE_HPP

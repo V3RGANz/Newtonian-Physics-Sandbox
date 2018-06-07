@@ -7,12 +7,11 @@
 
 //TODO: calculate coefficient of restitution, velocity of contact, normal force,
 //TODO: inertialTensor in world system of reference
+//FIXME: seems that instanse of class is usless, maybe make this utility class
 class CollisionResolve
 {
 public:
-    CollisionResolve(Collision &collision);
-private:
-    FloatCoord<3> impulseMagnitude;
+    explicit CollisionResolve(Collision &collision);
 };
 
 #endif //!NEWTONIAN_PHYSICS_SANDBOX_COLLISIONRESOLVE_HPP

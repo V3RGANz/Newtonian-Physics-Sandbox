@@ -1,5 +1,10 @@
+#define NEWTONIAN_PHYSICS_SANDBOX_DEBUG
+#ifdef NEWTONIAN_PHYSICS_SANDBOX_DEBUG
+#include <iostream>
+#endif
 #include "composedSpheresCB.hpp"
 #include "collisionTreeDetection.hpp"
+#include "collisionResolve.hpp"
 
 std::string ComposedSpheresCB::toPOV() const
 {
@@ -24,7 +29,7 @@ std::string ComposedSpheresCB::toPOV() const
 
 void ComposedSpheresCB::addSphere(FloatCoord<3> pos, double radius)
 {
-    spheres.push_back({pos, radius});
+    spheres.emplace_back(pos, radius);
 }
 
 void ComposedSpheresCB::addVelocity(const FloatCoord<3>& addDeltaV)
@@ -32,45 +37,41 @@ void ComposedSpheresCB::addVelocity(const FloatCoord<3>& addDeltaV)
     deltaV += addDeltaV;
 }
 
-inline
-void ComposedSpheresCB::applyVelocity(void)
-{
-    velocity += deltaV;
-    deltaV = FloatCoord<3>(0);
-}
-
-inline
-void ComposedSpheresCB::applyAngularVelocity(void)
-{
-    angularVelocity += deltaW;
-    deltaW = AngularVTensor<3, 3>(0);
-}
-
 void ComposedSpheresCB::update(const NPScell &hood, const int nanostep)
 {
-    consideredCollisions.clear();
+//    consideredCollisions.clear();
+    boundingObjectTree.updateBoundingsPositions(position);
     for (const CollisionBody& collisionBody : hood){
         detectCollision(collisionBody);
     }
 
-//    for ()
+    for (auto& collision : currentCollisions){
+        CollisionResolve collisionResolve(collision);
+    }
+
+    applyVelocity();
+    applyAngularVelocity();
 }
 
 
-ComposedSpheresCB::~ComposedSpheresCB(){
-    spheres.clear();
-}
+//ComposedSpheresCB::~ComposedSpheresCB(){
+//    spheres.clear();
+//}
 void ComposedSpheresCB::detectCollision(const CollisionBody &cBody)
 {
-    CollisionTreeDetection collisionTreeDetection(boundingObjectTree,
+#ifdef NEWTONIAN_PHYSICS_SANDBOX_DEBUG
+    std::cout << "detectCollision()\n";
+#endif
+    //FIXME
+    CollisionTreeDetection<BoundingSphere, BoundingSphere> collisionTreeDetection(boundingObjectTree,
                                                   cBody.getBoundingObjectTree());
     collisionTreeDetection.search(position, cBody.getPosition());
 
-    while (collisionTreeDetection.hasUnhandldedCollisions()){
-        Collision collision = collisionTreeDetection.getNextCollision(*this, cBody);
+    while (collisionTreeDetection.hasUnhandledCollisions()){
+        currentCollisions.push_back(collisionTreeDetection.getNextCollision(*this, cBody));
     }
 }
-BoundingObjectTree<BoundingSphere> &ComposedSpheresCB::getBoundingObjectTree() const
+const BoundingObjectTree<BoundingSphere>& ComposedSpheresCB::getBoundingObjectTree() const
 {
     return boundingObjectTree;
 }
@@ -91,9 +92,9 @@ double ComposedSpheresCB::getMass() const
     return mass;
 }
 
-AxisAlignedBoundingBox ComposedSpheresCB::getAABB()
+AxisAlignedBoundingBox ComposedSpheresCB::getAABB() const
 {
-    if (myAABB == AxisAlignedBoundingBox::EmptyAABB){
+    if (myAABB.empty()){
         if (spheres.empty()){
             return myAABB;
         }
@@ -117,7 +118,7 @@ AxisAlignedBoundingBox ComposedSpheresCB::getAABB()
             if (sphere.pos[2] + sphere.radius > maxZ)
                 maxZ = sphere.pos[2] + sphere.radius ;
         }
-        return {{maxX - minX, maxY - minY, maxZ - minZ},
+        return {FloatCoord<3>(maxX - minX, maxY - minY, maxZ - minZ),
                 FloatCoord<3>(0),
                 position - FloatCoord<3>(minX, minY, minZ)};
     } else {
@@ -144,7 +145,14 @@ AngularVTensor<3, 3> ComposedSpheresCB::getAngVelocity() const
 {
     return angularVelocity;
 }
-InertialTensor<3, 3> ComposedSpheresCB::getInertialTensor() const
+InertiaTensor<3, 3> ComposedSpheresCB::getInertialTensor() const
 {
     return inertialTensor;
+}
+void ComposedSpheresCB::getCollison(CollisionBody &me) const
+{
+}
+void ComposedSpheresCB::addAngularVelocity(const AngularVTensor<3, 3> &tensor)
+{
+    angularVelocity += tensor;
 }

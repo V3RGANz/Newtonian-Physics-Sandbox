@@ -4,7 +4,7 @@
 CollisionResolve::CollisionResolve(Collision &collision)
 {
     CollisionBody &cb1 = collision.first;
-    CollisionBody &cb2 = collision.second;
+    const CollisionBody &cb2 = collision.second;
 
     double res;
     FloatCoord<3> contactVelocity;
@@ -12,7 +12,7 @@ CollisionResolve::CollisionResolve(Collision &collision)
     FloatCoord<3> N;
     AngularVTensor<3, 3> I;
 
-    InertialTensor<3, 3> I0 =
+    InertiaTensor<3, 3> I0 =
         cb1.getOrientation() *
         (cb1.getInertialTensor().getInversed()) *
         (cb1.getOrientation().transpose());
@@ -30,4 +30,8 @@ CollisionResolve::CollisionResolve(Collision &collision)
             N * (I * cb2.getPosition().crossProduct(N)).crossProduct(cb2.getPosition());
 
     impulseMagnitude = numerator / denominator;
+
+    // FIXME: double computing. Look proposal
+    cb1.addVelocity(impulseMagnitude / cb1.getMass());
+    cb1.addAngularVelocity(I0 * (cb2.getPosition().crossProduct(impulseMagnitude)));
 }

@@ -17,6 +17,13 @@ public:
 
     Matrix() = default;
 
+    template<template<int> class COORD>
+    Matrix(const COORD<3>& diagonal){
+        for (int i = 0; i < DIM1; ++i)
+            for (int j = 0; j < DIM2; ++j)
+                dims[i][j] = (i == j) ? diagonal[i] : 0;
+    }
+
     Matrix(double scalar)
     {
         for (int i = 0; i < DIM1; ++i)
@@ -237,6 +244,18 @@ public:
 
     AngularVTensor() : Matrix<3, 3>() {};
 
+    template<template<int> class COORD>
+    explicit AngularVTensor(const COORD<3> &diagonal) : Matrix<3, 3>(diagonal)
+    {
+    }
+
+    AngularVTensor(const Matrix<3, 3>& matrix)
+    {
+        for (int i = 0; i < DIM1; ++i)
+            for (int j = 0; j < DIM2; ++j)
+                dims[i][j] = matrix[i][j];
+    }
+
     explicit AngularVTensor(double scalar)
     {
         for (int i = 0; i < DIM1; i++)
@@ -314,16 +333,16 @@ public:
 };
 
 template<int DIM1, int DIM2>
-class InertialTensor;
+class InertiaTensor;
 
 template<>
-class InertialTensor<3, 3>: public Matrix<3, 3>
+class InertiaTensor<3, 3>: public Matrix<3, 3>
 {
 public:
 
-    InertialTensor() = default;
+    InertiaTensor() = default;
 
-    InertialTensor(const Matrix<3, 3>& matrix) {
+    InertiaTensor(const Matrix<3, 3>& matrix) {
         for (int i = 0; i < DIM1; ++i) {
             for (int j = 0; j < DIM2; ++j) {
                 dims[i][j] = matrix[i][j];
@@ -331,19 +350,18 @@ public:
         }
     }
 
-    explicit InertialTensor(double scalar) : Matrix<3, 3>(scalar)
+    explicit InertiaTensor(double scalar) : Matrix<3, 3>(scalar)
     {
     }
 
     template<template<int> class COORD>
-    explicit InertialTensor(const COORD<3> &coord)
+    explicit InertiaTensor(const COORD<3> &diagonal) : Matrix<3, 3>(diagonal)
     {
-//TODO
     }
 
     template<template<int> class COORD>
     inline
-    InertialTensor<3, 3> &operator=(const COORD<3> &coord)
+    InertiaTensor<3, 3> &operator=(const COORD<3> &coord)
     {
 //TODO
     }

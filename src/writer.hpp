@@ -8,21 +8,21 @@ using namespace LibGeoDecomp;
 #include "collisionBody.hpp"
 
 
-class NPS_Writer: public Clonable<Writer<NPScell>, NPS_Writer>
+class NPSWriter: public Clonable<Writer<NPScell>, NPSWriter>
 {
 public:
     typedef APITraits::SelectTopology<NPScell>::Value Topology;
     static const int DIM = Topology::DIM;
     typedef GridBase<NPScell, DIM> GridType;
 
-    explicit NPS_Writer(
+    explicit NPSWriter(
         const std::string &prefix,
         const unsigned period = 1)
         :
-        Clonable<Writer<NPScell>, NPS_Writer>(prefix, period)
+        Clonable<Writer<NPScell>, NPSWriter>(prefix, period)
     {}
 
-    virtual void stepFinished(const GridType &grid, unsigned step, WriterEvent event)
+    void stepFinished(const GridType &grid, unsigned step, WriterEvent event) override
     {
         if ((event == WRITER_STEP_FINISHED) && (step % period != 0)) {
             return;

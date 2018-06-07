@@ -3,6 +3,9 @@
 
 
 #include "boundingObject.hpp"
+
+
+
 class AxisAlignedBoundingBox : public BoundingObject
 {
 public:
@@ -11,50 +14,53 @@ public:
                            const FloatCoord<3> &attachmentPoint)
         : axes(axes), position(position), attachmentPoint(attachmentPoint)
     {}
-    static const AxisAlignedBoundingBox EmptyAABB = {FloatCoord<3>(0), FloatCoord<3>(0), FloatCoord<3>(0)};
+
 
     bool operator==(const AxisAlignedBoundingBox& other){
         return axes == other.axes && attachmentPoint == other.attachmentPoint;
     }
-
-private:
 
     void updatePosition(FloatCoord<3> externalBodyPos) override
     {
         position = attachmentPoint + externalBodyPos;
     }
 
-    inline double getX(){
+    inline double getX() const{
         return axes[0];
     }
 
-    inline double getY(){
+    inline double getY() const {
         return axes[1];
     }
 
-    inline double getZ(){
+    inline double getZ() const {
         return axes[2];
     }
 
-    inline void setX(double x){
+    inline void setX(double x) {
         axes[0] = x;
     }
 
-    inline void setY(double y){
+    inline void setY(double y) {
         axes[1] = y;
     }
 
-    inline void setZ(double z){
+    inline void setZ(double z) {
         axes[2] = z;
     }
 
-    inline FloatCoord<3> getAxes(){
+    inline FloatCoord<3> getAxes() const {
         return axes;
     }
 
-    inline void setAxes(FloatCoord<3> axesNew){
+    inline void setAxes(FloatCoord<3> axesNew) {
         axes = axesNew;
     }
+
+    inline bool empty() const {
+        return axes[0] == 0 && axes[1] == 0 && axes[2] == 0;
+    }
+
 
 private:
     FloatCoord<3> axes;
@@ -62,6 +68,5 @@ private:
     // relative location in Object's reference system
     FloatCoord<3> attachmentPoint;
 };
-
 
 #endif //NEWTONIAN_PHYSICS_SANDBOX_AXISALIGNEDBOUNDEDBOX_HPP

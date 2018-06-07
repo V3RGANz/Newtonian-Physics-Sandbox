@@ -27,12 +27,13 @@ public:
     }
 
     inline
-    void addCollisionBody(CollisionBody& collisionBody){
+    void addCollisionBody(CollisionBody& collisionBody)
+    {
         collisionBodies.push_back(collisionBody);
     }
 
     template <class Container<CollisionBody> >
-    inline void addCollisionBody(Container<CollisionBody&> container){
+    inline void addCollisionBody(Container<CollisionBody&>& container){
         for (auto& collisionBody : container) {
             collisionBodies.push_back(collisionBody);
         }
@@ -44,7 +45,7 @@ private:
 };
 
 template <>
-inline void NPSInitializer::addCollisionBody<std::list<CollisionBody&> >(std::list<CollisionBody&> container){
+inline void NPSInitializer::addCollisionBody<std::list<CollisionBody&> >(std::list<CollisionBody&>& container){
     collisionBodies.splice(collisionBodies.end(), container);
 }
 

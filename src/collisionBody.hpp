@@ -4,7 +4,7 @@
 #include <libgeodecomp.h>
 #include <list>
 #include <string>
-#include <ntphyssbox.hpp>
+#include "boundingObjectTree.hpp"
 #include "collision.hpp"
 #include "cell.hpp"
 #include "tensor.hpp"
@@ -16,6 +16,9 @@ using namespace LibGeoDecomp;
 class CollisionBody
 {
 public:
+
+    //FIXME: HARDCODED
+    static const double DELTA_T = 0.1;
 
     virtual void update(const NPScell &hood, const int nanostep) = 0;
 
@@ -31,27 +34,30 @@ public:
 
     virtual FloatCoord<3> getAcceleration() const = 0;
 
-    virtual BoundingObjectTree<BoundingSphere>& getBoundingObjectTree() const = 0;
+    virtual const BoundingObjectTree<BoundingSphere>& getBoundingObjectTree() const = 0;
 
     virtual double getMass() const = 0;
 
-    virtual AxisAlignedBoundingBox getAABB() = 0;
+    virtual AxisAlignedBoundingBox getAABB() const = 0;
 
     virtual Matrix<3, 3> getOrientation() const = 0;
 
     virtual AngularVTensor<3, 3> getAngVelocity() const = 0;
 
-    virtual InertialTensor<3, 3> getInertialTensor() const = 0;
+    virtual InertiaTensor<3, 3> getInertialTensor() const = 0;
 
     virtual void addVelocity(const FloatCoord<3>&) = 0;
 
+    virtual void addAngularVelocity(const AngularVTensor<3, 3>&) = 0;
+
     virtual std::string toPOV() const = 0;
 
-    virtual void getCollison(CollisionBody& me) = 0;
+    virtual void getCollison(CollisionBody& me) const = 0;
 
     friend std::ostream &operator<<(std::ostream &, const CollisionBody &);
 
-    virtual ~CollisionBody() = 0;
+    //FIXME: should be pure
+    virtual ~CollisionBody() = default;
 };
 
 std::ostream &operator<<(std::ostream &os, const CollisionBody &cb);

@@ -11,17 +11,29 @@ class BoundingSphere: BoundingObject
 {
 public:
 
-    virtual void updatePosition(FloatCoord<3> externalBodyPos)
+    BoundingSphere() = default;
+
+    BoundingSphere(double radius, const FloatCoord<3> &attachmentPoint)
+        : radius(radius), attachmentPoint(attachmentPoint)
+    {
+#ifdef NEWTONIAN_PHYSICS_SANDBOX_DEBUG
+        std::cout << "BS radius: " << radius
+                      << "BS position: " << position
+                      << "\n";
+#endif
+    }
+
+    void updatePosition(FloatCoord<3> externalBodyPos) override
     {
         position = attachmentPoint + externalBodyPos;
     }
 
-    inline FloatCoord<3> getPosition(void)
+    inline FloatCoord<3> getPosition(void) const
     {
         return position;
     }
 
-    inline double getRadius()
+    inline double getRadius() const
     {
         return radius;
     }

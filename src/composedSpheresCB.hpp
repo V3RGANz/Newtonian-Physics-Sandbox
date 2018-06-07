@@ -2,19 +2,70 @@
 #define NEWTONIAN_PHYSICS_SANDBOX_COMPOSEDSPHERESCB_HPP
 
 //#include <ntphyssbox.hpp>
+#include <utility>
 #include "collisionBody.hpp"
+#include <cmath>
 //#include "shape.hpp"
 
 class ComposedSpheresCB: public CollisionBody
 {
 public:
-    ComposedSpheresCB() = default;
+    struct Sphere
+    {
+        Sphere(FloatCoord<3> pos, double radius)
+            : pos(pos), radius(radius)
+        {
+#ifdef NEWTONIAN_PHYSICS_SANDBOX_DEBUG
+            std::cout << "my radius: " << radius
+                      << "my position: " << pos
+                      << "\n";
+#endif
+        }
+
+        FloatCoord<3> pos;
+        double radius;
+    };
+
+    explicit ComposedSpheresCB(double density = 1)
+    {
+        computeMass(density);
+    }
+
+    explicit ComposedSpheresCB(std::list<Sphere> spheres, double density = 1) : spheres(spheres)
+    {
+#ifdef NEWTONIAN_PHYSICS_SANDBOX_DEBUG
+        std::cout << "sphere radius: " << spheres.back().radius
+                  << "sphere position: " << spheres.back().pos
+                  << "\n";
+#endif
+        boundingObjectTree.setBoundingObject(BoundingSphere(spheres.back().radius, FloatCoord<3>(0)));
+        boundingObjectTree.getBoundingObject().updatePosition(spheres.back().pos);
+        //FIXME: Just a sphere case
+        InertiaTensor<3, 3>(FloatCoord<3>(2.0 / 5 * mass * spheres.back().radius * spheres.back().radius));
+
+        computeMass(density);
+    }
+
     void addSphere(FloatCoord<3> pos, double radius);
     std::string toPOV() const override;
     void addVelocity(const FloatCoord<3>& addDeltaV) override;
-    inline void applyVelocity(void);
-    inline void applyAngularVelocity(void);
-    ~ComposedSpheresCB() override;
+    inline void applyVelocity(void)
+    {
+        velocity += deltaV;
+        deltaV = FloatCoord<3>(0);
+    }
+    inline void applyAngularVelocity(void)
+    {
+        angularVelocity += deltaW;
+        deltaW = AngularVTensor<3, 3>(0);
+    }
+
+    ~ComposedSpheresCB() override
+    {
+        spheres.clear();
+    }
+
+    void addAngularVelocity(const AngularVTensor<3, 3> &tensor) override;
 
     void update(const NPScell &hood, const int nanostep) override ;
 
@@ -30,48 +81,49 @@ public:
 
     FloatCoord<3> getAcceleration() const override ;
 
-    BoundingObjectTree<BoundingSphere>& getBoundingObjectTree() const override ;
+    const BoundingObjectTree<BoundingSphere>& getBoundingObjectTree() const override ;
 
     double getMass() const override ;
 
-    AxisAlignedBoundingBox getAABB() override ;
+    AxisAlignedBoundingBox getAABB() const override ;
 
     Matrix<3, 3> getOrientation() const override ;
 
     AngularVTensor<3, 3> getAngVelocity() const override ;
 
-    InertialTensor<3, 3> getInertialTensor() const override ;
+    InertiaTensor<3, 3> getInertialTensor() const override ;
 
+    void getCollison(CollisionBody& me) const override;
+
+    friend std::ostream &operator<<(std::ostream &, const CollisionBody &);
 private:
     typedef BoundingObjectTree<BoundingSphere> MyBoundingTree;
-    void computeMass(){
+    void computeMass(double density){
         //TODO: this is hard process to consider all intersections of spheres
         //TODO: check this example https://github.com/severinstrobl/overlap
+        //FIXME: now actually work just with spheres
+        double radius = spheres.back().radius;
+        mass = 4 * density * M_PI * radius * radius * radius / 3;
     }
-    struct Sphere
-    {
-        Sphere(FloatCoord<3> pos, double radius)
-            : pos(pos), radius(radius)
-        {}
-
-        FloatCoord<3> pos;
-        double radius;
-    };
 
     double                  mass;
-    AxisAlignedBoundingBox  myAABB          = AxisAlignedBoundingBox::EmptyAABB;
+    AxisAlignedBoundingBox  EmptyAABB       = AxisAlignedBoundingBox(FloatCoord<3>(0), FloatCoord<3>(0), FloatCoord<3>(0));
+    //FIXME : ADD EMPTY AABB
+    AxisAlignedBoundingBox  myAABB          = EmptyAABB;
     MyBoundingTree          boundingObjectTree;
     FloatCoord<3>           position        = FloatCoord<3>(0);
     FloatCoord<3>           velocity        = FloatCoord<3>(0);
     FloatCoord<3>           acceleration    = FloatCoord<3>(0);
     AngularVTensor<3, 3>    angularVelocity = AngularVTensor<3, 3>(0);
-    InertialTensor<3, 3>    inertialTensor  = InertialTensor<3, 3>(0);
-    Matrix<3, 3>            orientation     = Matrix<3, 3>(0);
-    FloatCoord<3> deltaV;
-    AngularVTensor<3, 3> deltaW;
-    std::list<Sphere> spheres;
-    std::map<CollisionBody,
-             Collision>     consideredCollisions;
+    InertiaTensor<3, 3>     inertialTensor;
+    //FIXME: fits to sphere case only
+    Matrix<3, 3>            orientation     = Matrix<3, 3>(FloatCoord<3>(1));
+    FloatCoord<3>           deltaV;
+    AngularVTensor<3, 3>    deltaW;
+    std::list<Sphere>       spheres;
+    std::list<Collision>    currentCollisions;
+//    std::map<CollisionBody*,
+//             Collision>     consideredCollisions;
 };
 
 #endif // !NEWTONIAN_PHYSICS_SANDBOX_COMPOSEDSPHERESCB_HPP

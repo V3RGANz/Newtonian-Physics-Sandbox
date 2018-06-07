@@ -8,7 +8,6 @@ class CollisionBody;
 
 struct Collision
 {
-    static const Collision emptyCollision = {};
     CollisionBody &first;
     const CollisionBody &second;
     //relative position of collision in fist body's system of reference;
