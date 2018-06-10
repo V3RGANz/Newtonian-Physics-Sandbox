@@ -3,6 +3,7 @@
 
 #include <libgeodecomp.h>
 #include "collisionBody.hpp"
+#include "composedSpheresCB.hpp"
 #include "Initializer.hpp"
 //#include "writer.hpp"
 
@@ -13,16 +14,16 @@ public:
 
     NPSWorld() = default;
 
-    void addBody(CollisionBody& collisionBody){
-        bodies.push_back(&collisionBody);
+    void addBody(ComposedSpheresCB& collisionBody){
+        bodies.push_back(collisionBody);
     }
 
     void start(){
         for (auto& body : bodies){
-            compareBox(*body);
+            compareBox(body);
         }
-//        npsInitializer = new NPSInitializer(Coord<3>(maxBoundingBox + FloatCoord<3>(1,1,1)), steps);
-//        npsInitializer->addCollisionBody(bodies);
+        npsInitializer = new NPSInitializer(Coord<3>(maxBoundingBox + FloatCoord<3>(1,1,1)), steps);
+        npsInitializer->addCollisionBody(bodies);
 //        SerialSimulator<NPScell> sim(npsInitializer);
 //        sim.addWriter(new NPSWriter("nps_sim", 200));
     }
@@ -36,8 +37,8 @@ private:
     }
 
     FloatCoord<3> maxBoundingBox = FloatCoord<3>(0);
-    std::list<CollisionBody*> bodies;
-//    NPSInitializer* npsInitializer = nullptr;
+    std::list<ComposedSpheresCB> bodies;
+    NPSInitializer* npsInitializer = nullptr;
 };
 
 

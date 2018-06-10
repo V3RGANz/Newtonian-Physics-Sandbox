@@ -3,8 +3,6 @@
 #include <list>
 #include <libgeodecomp.h>
 
-//#include "composedSpheresCB.hpp"
-
 using namespace LibGeoDecomp;
 
 class CollisionBody;
@@ -22,6 +20,7 @@ class MyAPI :
 //TODO: cell with arbitrary CollisionBody
 class NPScell : public BoxCell<std::list<ComposedSpheresCB> >
 {
+public:
     typedef MyAPI API;
 };
 
