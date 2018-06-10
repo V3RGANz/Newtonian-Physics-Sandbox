@@ -33,5 +33,5 @@ CollisionResolve::CollisionResolve(Collision &collision)
 
     // FIXME: double computing. Look proposal
     cb1.addVelocity(impulseMagnitude / cb1.getMass());
-    cb1.addAngularVelocity(I0 * (cb2.getPosition().crossProduct(impulseMagnitude)));
+    cb1.addAngularVelocity(AngularVTensor<3, 3>(I0 * (cb2.getPosition().crossProduct(impulseMagnitude))));
 }

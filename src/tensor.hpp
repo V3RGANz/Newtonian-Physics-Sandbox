@@ -244,11 +244,6 @@ public:
 
     AngularVTensor() : Matrix<3, 3>() {};
 
-    template<template<int> class COORD>
-    explicit AngularVTensor(const COORD<3> &diagonal) : Matrix<3, 3>(diagonal)
-    {
-    }
-
     AngularVTensor(const Matrix<3, 3>& matrix)
     {
         for (int i = 0; i < DIM1; ++i)

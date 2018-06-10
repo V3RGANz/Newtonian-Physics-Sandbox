@@ -40,8 +40,11 @@ void ComposedSpheresCB::addVelocity(const FloatCoord<3>& addDeltaV)
 void ComposedSpheresCB::update(const NPScell &hood, const int nanostep)
 {
 //    consideredCollisions.clear();
+    //FIXME: redundant update
+    //It'd be good to update-on-use, but we have constant copy
+    //It's not a big problem to fix, but left for later work
     boundingObjectTree.updateBoundingsPositions(position);
-    for (const CollisionBody& collisionBody : hood){
+    for (auto& collisionBody : hood){
         detectCollision(collisionBody);
     }
 
@@ -155,4 +158,17 @@ void ComposedSpheresCB::getCollison(CollisionBody &me) const
 void ComposedSpheresCB::addAngularVelocity(const AngularVTensor<3, 3> &tensor)
 {
     angularVelocity += tensor;
+}
+CollisionBody *ComposedSpheresCB::copy() const
+{
+    auto * cp = new ComposedSpheresCB(spheres);
+    cp->angularVelocity = angularVelocity;
+    cp->velocity = velocity;
+    cp->position = position;
+    cp->boundingObjectTree = boundingObjectTree;
+    cp->inertialTensor = inertialTensor;
+    cp->orientation = orientation;
+    cp->mass = mass;
+    cp->myAABB = myAABB;
+    return cp;
 }

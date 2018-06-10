@@ -1,4 +1,5 @@
 #define NEWTONIAN_PHYSICS_SANDBOX_DEBUG
+#include "../npsworld.hpp"
 #include "../composedSpheresCB.hpp"
 #include "../collisionResolve.hpp"
 
@@ -12,11 +13,13 @@ int main()
                              {FloatCoord<3>{0,1,0.7}, 2}
     });
 
-    a.detectCollision(b);
 
-    b.detectCollision(a);
+//    NPSWorld npsWorld;
 
-    a.detectCollision(a);
+//    npsWorld.addBody(a);
+//    npsWorld.addBody(b);
+
+//    npsWorld.start();
 
     return 0;
 }

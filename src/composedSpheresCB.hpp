@@ -31,7 +31,7 @@ public:
         computeMass(density);
     }
 
-    explicit ComposedSpheresCB(std::list<Sphere> spheres, double density = 1) : spheres(spheres)
+    explicit ComposedSpheresCB(const std::list<Sphere>& spheres, double density = 1) : spheres(spheres)
     {
 #ifdef NEWTONIAN_PHYSICS_SANDBOX_DEBUG
         std::cout << "sphere radius: " << spheres.back().radius
@@ -95,13 +95,15 @@ public:
 
     void getCollison(CollisionBody& me) const override;
 
+    CollisionBody* copy() const override;
+
     friend std::ostream &operator<<(std::ostream &, const CollisionBody &);
 private:
     typedef BoundingObjectTree<BoundingSphere> MyBoundingTree;
     void computeMass(double density){
         //TODO: this is hard process to consider all intersections of spheres
         //TODO: check this example https://github.com/severinstrobl/overlap
-        //FIXME: now actually work just with spheres
+        //FIXME: actually works only with spheres
         double radius = spheres.back().radius;
         mass = 4 * density * M_PI * radius * radius * radius / 3;
     }

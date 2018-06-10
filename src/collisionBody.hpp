@@ -18,7 +18,7 @@ class CollisionBody
 public:
 
     //FIXME: HARDCODED
-    static const double DELTA_T = 0.1;
+//    static constexpr double DELTA_T = 0.1;
 
     virtual void update(const NPScell &hood, const int nanostep) = 0;
 
@@ -55,6 +55,8 @@ public:
     virtual void getCollison(CollisionBody& me) const = 0;
 
     friend std::ostream &operator<<(std::ostream &, const CollisionBody &);
+
+    virtual CollisionBody* copy() const = 0;
 
     //FIXME: should be pure
     virtual ~CollisionBody() = default;

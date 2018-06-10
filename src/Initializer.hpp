@@ -17,37 +17,37 @@ public:
 
     virtual void grid(GridBase<NPScell, 3>* target)
     {
-        CoordBox<3> box = target->boundingBox();
-        for (auto& collisionBody : collisionBodies){
-            cellsFilling[Coord<3>(collisionBody.getPosition())] << collisionBody;
-        }
-        for (auto& pair : cellsFilling){
-            target->set(pair.first, pair.second);
-        }
+//        CoordBox<3> box = target->boundingBox();
+//        for (auto& collisionBody : collisionBodies){
+//            cellsFilling[Coord<3>(collisionBody->getPosition())] << collisionBody;
+//        }
+//        for (auto& pair : cellsFilling){
+//            target->set(pair.first, pair.second);
+//        }
     }
 
     inline
     void addCollisionBody(CollisionBody& collisionBody)
     {
-        collisionBodies.push_back(collisionBody);
+//        collisionBodies.push_back(&collisionBody);
     }
 
-    template <class Container<CollisionBody> >
-    inline void addCollisionBody(Container<CollisionBody&>& container){
-        for (auto& collisionBody : container) {
-            collisionBodies.push_back(collisionBody);
-        }
-    }
+//    template <class Container<CollisionBody*> >
+//    inline void addCollisionBody(Container<CollisionBody*>& container){
+//        for (auto& collisionBody : container) {
+//            collisionBodies.push_back(collisionBody);
+//        }
+//    }
 
 private:
     std::map<Coord<3>, NPScell > cellsFilling;
-    std::list<CollisionBody&> collisionBodies;
+    std::list<CollisionBody*> collisionBodies;
 };
 
-template <>
-inline void NPSInitializer::addCollisionBody<std::list<CollisionBody&> >(std::list<CollisionBody&>& container){
-    collisionBodies.splice(collisionBodies.end(), container);
-}
+//template <>
+//inline void NPSInitializer::addCollisionBody<std::list<CollisionBody*> >(std::list<CollisionBody*>& container){
+//    collisionBodies.splice(collisionBodies.end(), container);
+//}
 
 /**
  * Starting point for every simulation.
@@ -55,23 +55,23 @@ inline void NPSInitializer::addCollisionBody<std::list<CollisionBody&> >(std::li
  * condition from user data
  */
 
-class NPSSimulator // wrapper over LGD Simulator and Initializer actually
-{
-public:
-    NPSSimulator() = default;
-    // TODO: dimensions should be calculated automatically, steps should not be hardcoded
-    NPSSimulator(Coord<3>& dimensions) : npsInitializer(dimensions, 100000)
-    {
-
-    }
-
-    inline
-    void addCollisionBody(CollisionBody& collisionBody) {
-        npsInitializer.addCollisionBody(collisionBody);
-    }
-private:
-    NPSInitializer npsInitializer;
-};
+//class NPSSimulator // wrapper over LGD Simulator and Initializer actually
+//{
+//public:
+//    NPSSimulator() = default;
+//    // TODO: dimensions should be calculated automatically, steps should not be hardcoded
+//    explicit NPSSimulator(Coord<3>& dimensions) : npsInitializer(dimensions, 100000)
+//    {
+//
+//    }
+//
+//    inline
+//    void addCollisionBody(CollisionBody& collisionBody) {
+//        npsInitializer.addCollisionBody(collisionBody);
+//    }
+//private:
+//    NPSInitializer npsInitializer;
+//};
 
 
 
