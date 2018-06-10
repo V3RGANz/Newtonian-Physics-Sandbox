@@ -54,12 +54,12 @@ public:
 
     virtual void getCollison(CollisionBody& me) const = 0;
 
-    friend std::ostream &operator<<(std::ostream &, const CollisionBody &);
-
     virtual CollisionBody* copy() const = 0;
 
     //FIXME: should be pure
     virtual ~CollisionBody() = default;
+
+    friend std::ostream &operator<<(std::ostream &, const CollisionBody &);
 };
 
 std::ostream &operator<<(std::ostream &os, const CollisionBody &cb);

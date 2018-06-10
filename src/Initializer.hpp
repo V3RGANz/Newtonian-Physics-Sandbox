@@ -18,7 +18,7 @@ public:
     {
         CoordBox<3> box = target->boundingBox();
         for (auto& collisionBody : collisionBodies){
-            cellsFilling[Coord<3>(collisionBody.getPosition())] << collisionBody;
+            cellsFilling[Coord<3>(collisionBody.getPosition())].insert(collisionBody);
         }
         for (auto& pair : cellsFilling){
             target->set(pair.first, pair.second);
@@ -45,13 +45,13 @@ public:
 
 private:
     std::map<Coord<3>, NPScell > cellsFilling;
-    std::list<ComposedSpheresCB> collisionBodies;
+    std::vector<ComposedSpheresCB> collisionBodies;
 };
-
-template <>
-inline void NPSInitializer::addCollisionBody<std::list<ComposedSpheresCB> >(std::list<ComposedSpheresCB>& container){
-    collisionBodies.splice(collisionBodies.end(), container);
-}
+//
+//template <>
+//inline void NPSInitializer::addCollisionBody<std::list<ComposedSpheresCB> >(std::list<ComposedSpheresCB>& container){
+//    collisionBodies.splice(collisionBodies.end(), container);
+//}
 
 /**
  * Starting point for every simulation.

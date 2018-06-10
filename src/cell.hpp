@@ -18,7 +18,8 @@ class MyAPI :
 {};
 
 //TODO: cell with arbitrary CollisionBody
-class NPScell : public BoxCell<std::list<ComposedSpheresCB> >
+//FIXME: vector is not good, but std::list missing operator<< (need for BoxCell::insert() method)
+class NPScell : public BoxCell<std::vector<ComposedSpheresCB> >
 {
 public:
     typedef MyAPI API;

@@ -24,7 +24,7 @@ public:
         }
         npsInitializer = new NPSInitializer(Coord<3>(maxBoundingBox + FloatCoord<3>(1,1,1)), steps);
         npsInitializer->addCollisionBody(bodies);
-//        SerialSimulator<NPScell> sim(npsInitializer);
+        SerialSimulator<NPScell> sim(npsInitializer);
 //        sim.addWriter(new NPSWriter("nps_sim", 200));
     }
 private:

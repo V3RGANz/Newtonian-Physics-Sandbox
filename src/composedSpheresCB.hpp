@@ -15,11 +15,6 @@ public:
         Sphere(FloatCoord<3> pos, double radius)
             : pos(pos), radius(radius)
         {
-#ifdef NEWTONIAN_PHYSICS_SANDBOX_DEBUG
-            std::cout << "my radius: " << radius
-                      << "my position: " << pos
-                      << "\n";
-#endif
         }
 
         FloatCoord<3> pos;
@@ -33,11 +28,6 @@ public:
 
     explicit ComposedSpheresCB(const std::list<Sphere>& spheres, double density = 1) : spheres(spheres)
     {
-#ifdef NEWTONIAN_PHYSICS_SANDBOX_DEBUG
-        std::cout << "sphere radius: " << spheres.back().radius
-                  << "sphere position: " << spheres.back().pos
-                  << "\n";
-#endif
         boundingObjectTree.setBoundingObject(BoundingSphere(spheres.back().radius, FloatCoord<3>(0)));
         boundingObjectTree.getBoundingObject().updatePosition(spheres.back().pos);
         //FIXME: Just a sphere case
@@ -123,7 +113,7 @@ private:
     FloatCoord<3>           deltaV;
     AngularVTensor<3, 3>    deltaW;
     std::list<Sphere>       spheres;
-    std::list<Collision>    currentCollisions;
+//    std::list<Collision>    currentCollisions;
 //    std::map<CollisionBody*,
 //             Collision>     consideredCollisions;
 };

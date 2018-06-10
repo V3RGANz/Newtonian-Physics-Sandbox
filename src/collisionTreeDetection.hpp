@@ -1,12 +1,9 @@
 #ifndef NEWTONIAN_PHYSICS_SANDBOX_COLLISIONTREEDETECTION_HPP
 #define NEWTONIAN_PHYSICS_SANDBOX_COLLISIONTREEDETECTION_HPP
 
-#ifdef NEWTONIAN_PHYSICS_SANDBOX_DEBUG
-#include <iostream>
-#endif
-
 #include "boundingObjectTree.hpp"
 #include "collisionDetection.hpp"
+#include "composedSpheresCB.hpp"
 
 /**
  * Explores the objects for collision using bounding object tree
@@ -63,9 +60,6 @@ private:
      */
     void traverse(BoundingObjectTree1 &boundingObjectTree11, const BoundingObjectTree2 &boundingObjectTree21)
     {
-#ifdef NEWTONIAN_PHYSICS_SANDBOX_DEBUG
-        std::cout << "start traversing\n";
-#endif
         CollisionDetection collisionDetection;
         if (collisionDetection
             .detectCollision<BoundingObject1, BoundingObject2>(boundingObjectTree11.getBoundingObject(),

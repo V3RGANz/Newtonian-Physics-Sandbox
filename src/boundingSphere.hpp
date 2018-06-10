@@ -16,11 +16,6 @@ public:
     BoundingSphere(double radius, const FloatCoord<3> &attachmentPoint)
         : radius(radius), attachmentPoint(attachmentPoint)
     {
-#ifdef NEWTONIAN_PHYSICS_SANDBOX_DEBUG
-        std::cout << "BS radius: " << radius
-                      << "BS position: " << position
-                      << "\n";
-#endif
     }
 
     void updatePosition(FloatCoord<3> externalBodyPos) override

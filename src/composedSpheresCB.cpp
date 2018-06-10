@@ -1,7 +1,3 @@
-#define NEWTONIAN_PHYSICS_SANDBOX_DEBUG
-#ifdef NEWTONIAN_PHYSICS_SANDBOX_DEBUG
-#include <iostream>
-#endif
 #include "composedSpheresCB.hpp"
 #include "collisionTreeDetection.hpp"
 #include "collisionResolve.hpp"
@@ -37,41 +33,37 @@ void ComposedSpheresCB::addVelocity(const FloatCoord<3>& addDeltaV)
     deltaV += addDeltaV;
 }
 
+//FIXME Collision not allows copying so currentCollisions commented
 void ComposedSpheresCB::update(const NPScell &hood, const int nanostep)
 {
-//    consideredCollisions.clear();
-    //FIXME: redundant update
+    //FIXME: redundant update of boundingObjectTree
     //It'd be good to update-on-use, but we have constant copy
     //It's not a big problem to fix, but left for later work
     boundingObjectTree.updateBoundingsPositions(position);
+
     for (auto& collisionBody : hood){
         detectCollision(collisionBody);
     }
 
-    for (auto& collision : currentCollisions){
-        CollisionResolve collisionResolve(collision);
-    }
+//    for (auto& collision : currentCollisions){
+//        CollisionResolve collisionResolve(collision);
+//    }
 
     applyVelocity();
     applyAngularVelocity();
 }
 
-
-//ComposedSpheresCB::~ComposedSpheresCB(){
-//    spheres.clear();
-//}
+//FIXME Collision not allows copying so currentCollisions commented
 void ComposedSpheresCB::detectCollision(const CollisionBody &cBody)
 {
-#ifdef NEWTONIAN_PHYSICS_SANDBOX_DEBUG
-    std::cout << "detectCollision()\n";
-#endif
-    //FIXME
     CollisionTreeDetection<BoundingSphere, BoundingSphere> collisionTreeDetection(boundingObjectTree,
                                                   cBody.getBoundingObjectTree());
     collisionTreeDetection.search(position, cBody.getPosition());
 
     while (collisionTreeDetection.hasUnhandledCollisions()){
-        currentCollisions.push_back(collisionTreeDetection.getNextCollision(*this, cBody));
+        Collision current = collisionTreeDetection.getNextCollision(*this, cBody);
+        CollisionResolve collisionResolve(current);
+//        currentCollisions.push_back(collisionTreeDetection.getNextCollision(*this, cBody));
     }
 }
 const BoundingObjectTree<BoundingSphere>& ComposedSpheresCB::getBoundingObjectTree() const
