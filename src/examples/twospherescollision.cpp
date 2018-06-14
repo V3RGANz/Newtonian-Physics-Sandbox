@@ -14,7 +14,7 @@ int main()
     });
 
 
-//    NPSWorld npsWorld;
+    NPSWorld npsWorld;
 
 //    npsWorld.addBody(a);
 //    npsWorld.addBody(b);

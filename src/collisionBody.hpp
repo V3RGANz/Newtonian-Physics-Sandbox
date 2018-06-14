@@ -16,6 +16,7 @@ using namespace LibGeoDecomp;
 class CollisionBody
 {
 public:
+    typedef MyAPI API;
 
     //FIXME: HARDCODED
 //    static constexpr double DELTA_T = 0.1;
