@@ -4,22 +4,22 @@
 #include <libgeodecomp.h>
 using namespace LibGeoDecomp;
 
-#include "cell.hpp"
+//#include "cell.hpp"
 #include "collisionBody.hpp"
 
 
-class NPSWriter: public Clonable<Writer<NPScell>, NPSWriter>
+class NPSWriter: public Clonable<Writer<NPSCell>, NPSWriter>
 {
 public:
-    typedef APITraits::SelectTopology<NPScell>::Value Topology;
+    typedef APITraits::SelectTopology<NPSCell>::Value Topology;
     static const int DIM = Topology::DIM;
-    typedef GridBase<NPScell, DIM> GridType;
+    typedef GridBase<NPSCell, DIM> GridType;
 
     explicit NPSWriter(
         const std::string &prefix,
         const unsigned period = 1)
         :
-        Clonable<Writer<NPScell>, NPSWriter>(prefix, period)
+        Clonable<Writer<NPSCell>, NPSWriter>(prefix, period)
     {}
 
     void stepFinished(const GridType &grid, unsigned step, WriterEvent event) override
@@ -48,7 +48,7 @@ public:
 
         CoordBox<3> box = grid.boundingBox();
         for (CoordBox<3>::Iterator j = box.begin(); j != box.end(); ++j) {
-            const NPScell &container = grid.get(*j);
+            const NPSCell &container = grid.get(*j);
 
             for (std::size_t i = 0; i < container.size(); ++i) {
                 file << container[i];

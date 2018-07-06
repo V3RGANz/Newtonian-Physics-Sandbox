@@ -179,6 +179,9 @@ public:
             dims[0][0] * dims[1][2] * dims[2][1];
     }
 
+    Matrix<3, 3>(std::initializer_list<int> list){
+    };
+
     // FIXME add exception for non-invertible matrix
     // TODO not such hardcoded
     Matrix<3, 3> &inverse(void)

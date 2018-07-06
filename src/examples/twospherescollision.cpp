@@ -13,13 +13,16 @@ int main()
                              {FloatCoord<3>{0,1,0.7}, 2}
     });
 
+    a.addVelocity(FloatCoord<3>{-0.001,-0.001,-0.001});
+    a.applyVelocity();
 
     NPSWorld npsWorld;
 
-//    npsWorld.addBody(a);
-//    npsWorld.addBody(b);
+    npsWorld.addBody("first", a);
 
-//    npsWorld.start();
+//    npsWorld.addBody("second", b);
+
+    npsWorld.start();
 
     return 0;
 }

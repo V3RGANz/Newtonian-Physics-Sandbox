@@ -6,19 +6,19 @@
 #include "composedSpheresCB.hpp"
 
 //TODO should import from Blender
-class NPSInitializer : public SimpleInitializer<NPScell>
+class NPSInitializer : public SimpleInitializer<NPSCell>
 {
 public:
 
     NPSInitializer(const Coord<3>& dimensions, unsigned steps) :
-        SimpleInitializer<NPScell>(dimensions, steps)
+        SimpleInitializer<NPSCell>(dimensions, steps)
     {}
 
-    void grid(GridBase<NPScell, 3>* target) override
+    void grid(GridBase<NPSCell, 3>* target) override
     {
         CoordBox<3> box = target->boundingBox();
         for (auto& collisionBody : collisionBodies){
-            cellsFilling[Coord<3>(collisionBody.getPosition())].insert(collisionBody);
+            cellsFilling[Coord<3>(collisionBody.getPos())].insert(collisionBody);
         }
         for (auto& pair : cellsFilling){
             target->set(pair.first, pair.second);
@@ -44,7 +44,7 @@ public:
     }
 
 private:
-    std::map<Coord<3>, NPScell > cellsFilling;
+    std::map<Coord<3>, NPSCell > cellsFilling;
     std::vector<ComposedSpheresCB> collisionBodies;
 };
 //

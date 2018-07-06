@@ -26,12 +26,12 @@ CollisionResolve::CollisionResolve(Collision &collision)
     denominator =
         (cb1.getMass() + cb2.getMass()) /
             (cb1.getMass() * cb2.getMass()) +
-            N * (I * cb1.getPosition().crossProduct(N)).crossProduct(cb1.getPosition()) +
-            N * (I * cb2.getPosition().crossProduct(N)).crossProduct(cb2.getPosition());
+            N * (I * cb1.getPos().crossProduct(N)).crossProduct(cb1.getPos()) +
+            N * (I * cb2.getPos().crossProduct(N)).crossProduct(cb2.getPos());
 
     impulseMagnitude = numerator / denominator;
 
     // FIXME: double computing. Look proposal
     cb1.addVelocity(impulseMagnitude / cb1.getMass());
-    cb1.addAngularVelocity(AngularVTensor<3, 3>(I0 * (cb2.getPosition().crossProduct(impulseMagnitude))));
+    cb1.addAngularVelocity(AngularVTensor<3, 3>(I0 * (cb2.getPos().crossProduct(impulseMagnitude))));
 }

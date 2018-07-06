@@ -28,4 +28,4 @@ add_executable(Newtonian_Physics_Sandbox
         src/Initializer.hpp
         src/composedSpheresCB.cpp
         src/collisionResolve.cpp
-        src/collisionBody.cpp src/npsworld.cpp src/npsworld.hpp src/axisalignedboundingbox.cpp src/axisalignedboundingbox.hpp src/examples/twospherescollision.cpp)
+        src/collisionBody.cpp src/npsworld.cpp src/npsworld.hpp src/axisalignedboundingbox.cpp src/axisalignedboundingbox.hpp src/examples/twospherescollision.cpp src/collisionbodyptr.hpp src/examples/billiardBalls.cpp src/examples/NewtonsBalls.cpp)

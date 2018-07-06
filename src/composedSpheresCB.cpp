@@ -1,6 +1,7 @@
 #include "composedSpheresCB.hpp"
 #include "collisionTreeDetection.hpp"
 #include "collisionResolve.hpp"
+#include <cmath>
 
 std::string ComposedSpheresCB::toPOV() const
 {
@@ -34,31 +35,11 @@ void ComposedSpheresCB::addVelocity(const FloatCoord<3>& addDeltaV)
 }
 
 //FIXME Collision not allows copying so currentCollisions commented
-void ComposedSpheresCB::update(const NPScell &hood, const int nanostep)
-{
-    //FIXME: redundant update of boundingObjectTree
-    //It'd be good to update-on-use, but we have constant copy
-    //It's not a big problem to fix, but left for later work
-    boundingObjectTree.updateBoundingsPositions(position);
-
-    for (auto& collisionBody : hood){
-        detectCollision(collisionBody);
-    }
-
-//    for (auto& collision : currentCollisions){
-//        CollisionResolve collisionResolve(collision);
-//    }
-
-    applyVelocity();
-    applyAngularVelocity();
-}
-
-//FIXME Collision not allows copying so currentCollisions commented
 void ComposedSpheresCB::detectCollision(const CollisionBody &cBody)
 {
     CollisionTreeDetection<BoundingSphere, BoundingSphere> collisionTreeDetection(boundingObjectTree,
                                                   cBody.getBoundingObjectTree());
-    collisionTreeDetection.search(position, cBody.getPosition());
+    collisionTreeDetection.search(position, cBody.getPos());
 
     while (collisionTreeDetection.hasUnhandledCollisions()){
         Collision current = collisionTreeDetection.getNextCollision(*this, cBody);
@@ -70,7 +51,7 @@ const BoundingObjectTree<BoundingSphere>& ComposedSpheresCB::getBoundingObjectTr
 {
     return boundingObjectTree;
 }
-FloatCoord<3> ComposedSpheresCB::getPosition() const
+FloatCoord<3> ComposedSpheresCB::getPos() const
 {
     return position;
 }
@@ -163,4 +144,28 @@ CollisionBody *ComposedSpheresCB::copy() const
     cp->mass = mass;
     cp->myAABB = myAABB;
     return cp;
+}
+void ComposedSpheresCB::rotate(FloatCoord<3> rotationVector)
+{
+    Matrix<3, 3> rotationX(FloatCoord<3>(1, cos(rotationVector[0]), cos(rotationVector[0])));
+    rotationX[1][2] = -sin(rotationVector[0]);
+    rotationX[2][1] = sin(rotationVector[0]);
+
+    Matrix<3, 3> rotationY(FloatCoord<3>(cos(rotationVector[1]), 1, cos(rotationVector[1])));
+    rotationY[0][2] = -sin(rotationVector[1]);
+    rotationY[2][0] = sin(rotationVector[1]);
+
+    Matrix<3, 3> rotationZ(FloatCoord<3>(cos(rotationVector[2]), cos(rotationVector[2]), 1));
+    rotationZ[0][1] = -sin(rotationVector[2]);
+    rotationZ[1][0] = sin(rotationVector[2]);
+    orientation *= rotationX * rotationY * rotationZ;
+}
+
+void ComposedSpheresCB::setVelocity(FloatCoord<3> velocityVector)
+{
+    velocity = velocityVector;
+}
+void ComposedSpheresCB::setPosition(FloatCoord<3> position)
+{
+    this->position = position;
 }

@@ -6,12 +6,19 @@
 #include <string>
 #include "boundingObjectTree.hpp"
 #include "collision.hpp"
-#include "cell.hpp"
 #include "tensor.hpp"
 #include "boundingSphere.hpp"
 #include "axisalignedboundingbox.hpp"
 
 using namespace LibGeoDecomp;
+
+class NPSCell;
+
+class MyAPI :
+    public APITraits::HasCubeTopology<3>,
+    public APITraits::HasStencil<Stencils::Moore<3, 1> >,
+    public APITraits::HasNanoSteps<2>
+{};
 
 class CollisionBody
 {
@@ -21,7 +28,7 @@ public:
     //FIXME: HARDCODED
 //    static constexpr double DELTA_T = 0.1;
 
-    virtual void update(const NPScell &hood, const int nanostep) = 0;
+//    virtual void update(const NPSCell &hood, const int nanostep) = 0;
 
     virtual void detectCollision(const CollisionBody &cBody) = 0;
 
@@ -29,7 +36,7 @@ public:
 
     virtual bool wasConsidered() const = 0;
 
-    virtual FloatCoord<3> getPosition() const = 0;
+    virtual FloatCoord<3> getPos() const = 0;
 
     virtual FloatCoord<3> getVelocity() const = 0;
 
@@ -56,6 +63,14 @@ public:
     virtual void getCollison(CollisionBody& me) const = 0;
 
     virtual CollisionBody* copy() const = 0;
+
+    virtual void rotate(FloatCoord<3> rotationVector) = 0;
+
+    virtual void setVelocity(FloatCoord<3> velocityVector) = 0;
+
+    virtual void setPosition(FloatCoord<3> position) = 0;
+
+//    virtual void setAngularVelocity(FloatCoord<3> position) = 0;
 
     //FIXME: should be pure
     virtual ~CollisionBody() = default;
