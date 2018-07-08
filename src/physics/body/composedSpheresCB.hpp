@@ -25,20 +25,11 @@ public:
         double radius;
     };
 
-    explicit ComposedSpheresCB(double density = 1)
-    {
-        computeMass(density);
-    }
+    explicit ComposedSpheresCB(double density = 1);
 
-    explicit ComposedSpheresCB(const std::list<Sphere>& spheres, double density = 1) : spheres(spheres)
-    {
-        boundingObjectTree.setBoundingObject(BoundingSphere(spheres.back().radius, FloatCoord<3>(0)));
-        boundingObjectTree.getBoundingObject().updatePosition(spheres.back().pos);
-        //FIXME: Just a sphere case
-        InertiaTensor<3, 3>(FloatCoord<3>(2.0 / 5 * mass * spheres.back().radius * spheres.back().radius));
+    explicit ComposedSpheresCB(const std::list<Sphere>& spheres, double density = 1);
 
-        computeMass(density);
-    }
+//    ComposedSpheresCB(const ComposedSpheresCB& other);
 
     void addSphere(FloatCoord<3> pos, double radius);
     std::string toPOV() const override;
@@ -72,17 +63,12 @@ public:
         //It's not a big problem to optimize, but left for later work
         boundingObjectTree.updateBoundingsPositions(position);
 
-
-
-
         for (auto& collisionBody : hood){
             detectCollision(collisionBody);
         }
-
 //    for (auto& collision : currentCollisions){
 //        CollisionResolve collisionResolve(collision);
 //    }
-
         position += velocity * DELTA_T;
 
         applyVelocity();
@@ -118,6 +104,9 @@ public:
     void getCollison(CollisionBody& me) const override;
 
     CollisionBody* copy() const override;
+
+//    ComposedSpheresCB& operator=(const ComposedSpheresCB& other);
+//    ComposedSpheresCB& operator=(ComposedSpheresCB&& other) noexcept;
 
     friend std::ostream &operator<<(std::ostream &, const CollisionBody &);
 private:

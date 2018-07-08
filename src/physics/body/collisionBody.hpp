@@ -4,11 +4,11 @@
 #include <libgeodecomp.h>
 #include <list>
 #include <string>
-#include "boundingObjectTree.hpp"
-#include "collision.hpp"
-#include "tensor.hpp"
-#include "boundingSphere.hpp"
-#include "axisalignedboundingbox.hpp"
+#include "physics/bounding/boundingObjectTree.hpp"
+#include "physics/collision/collision.hpp"
+#include "math/tensor.hpp"
+#include "physics/bounding/boundingSphere.hpp"
+#include "physics/bounding/axisalignedboundingbox.hpp"
 
 using namespace LibGeoDecomp;
 

@@ -1,6 +1,6 @@
 #ifndef NEWTONIAN_PHYSICS_SANDBOX_COLLISIONDETECTION_HPP
 #define NEWTONIAN_PHYSICS_SANDBOX_COLLISIONDETECTION_HPP
-#include "boundingSphere.hpp"
+#include "physics/bounding/boundingSphere.hpp"
 #include "collision.hpp"
 
 
@@ -14,12 +14,12 @@ public:
         return false;
     };
 
-    FloatCoord<3> getFirstCollision()
+    inline FloatCoord<3> getFirstCollision()
     {
         return body1CollisionPoint;
     }
 
-    FloatCoord<3> getSecondCollision()
+    inline FloatCoord<3> getSecondCollision()
     {
         return body2CollisionPoint;
     }

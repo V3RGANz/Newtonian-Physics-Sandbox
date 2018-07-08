@@ -1,6 +1,6 @@
 #include "composedSpheresCB.hpp"
-#include "collisionTreeDetection.hpp"
-#include "collisionResolve.hpp"
+#include "physics/collision/collisionTreeDetection.hpp"
+#include "physics/collision/collisionResolve.hpp"
 #include <cmath>
 
 std::string ComposedSpheresCB::toPOV() const
@@ -168,4 +168,58 @@ void ComposedSpheresCB::setVelocity(FloatCoord<3> velocityVector)
 void ComposedSpheresCB::setPosition(FloatCoord<3> position)
 {
     this->position = position;
+}
+//ComposedSpheresCB &ComposedSpheresCB::operator=(const ComposedSpheresCB &other)
+//{
+//    angularVelocity     = other.angularVelocity;
+//    velocity            = other.velocity;
+//    position            = other.position;
+//    boundingObjectTree  = other.boundingObjectTree;
+//    inertialTensor      = other.inertialTensor;
+//    orientation         = other.orientation;
+//    mass                = other.mass;
+//    myAABB              = other.myAABB;
+//    acceleration        = other.acceleration;
+//    spheres             = other.spheres;
+//    return *this;
+//}
+//ComposedSpheresCB &ComposedSpheresCB::operator=(ComposedSpheresCB &&other) noexcept
+//{
+//    angularVelocity     = other.angularVelocity;
+//    velocity            = other.velocity;
+//    position            = other.position;
+//    boundingObjectTree  = other.boundingObjectTree;
+//    inertialTensor      = other.inertialTensor;
+//    orientation         = other.orientation;
+//    mass                = other.mass;
+//    myAABB              = other.myAABB;
+//    acceleration        = other.acceleration;
+//    spheres             = std::move(other.spheres);
+//    return *this;
+//}
+//ComposedSpheresCB::ComposedSpheresCB(const ComposedSpheresCB &other)
+//    : angularVelocity(other.angularVelocity),
+//      velocity(other.velocity),
+//      position(other.position),
+//      boundingObjectTree(other.boundingObjectTree),
+//      inertialTensor(other.inertialTensor),
+//      orientation(other.orientation),
+//      mass(other.mass),
+//      myAABB(other.myAABB),
+//      acceleration(other.acceleration),
+//      spheres(other.spheres)
+//{}
+ComposedSpheresCB::ComposedSpheresCB(const std::list<ComposedSpheresCB::Sphere> &spheres, double density)
+    : spheres(spheres)
+{
+    boundingObjectTree.setBoundingObject(BoundingSphere(spheres.back().radius, FloatCoord<3>(0)));
+    boundingObjectTree.getBoundingObject().updatePosition(spheres.back().pos);
+    //FIXME: Just a sphere case
+    InertiaTensor<3, 3>(FloatCoord<3>(2.0 / 5 * mass * spheres.back().radius * spheres.back().radius));
+
+    computeMass(density);
+}
+ComposedSpheresCB::ComposedSpheresCB(double density)
+{
+    computeMass(density);
 }

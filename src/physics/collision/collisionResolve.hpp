@@ -3,7 +3,7 @@
 
 #include <cmath>
 #include "collision.hpp"
-#include "collisionBody.hpp"
+#include "physics/body/collisionBody.hpp"
 
 //TODO: calculate coefficient of restitution, velocity of contact, normal force,
 //TODO: inertialTensor in world system of reference

@@ -16,14 +16,9 @@ public:
     {}
 
 
-    bool operator==(const AxisAlignedBoundingBox& other){
-        return axes == other.axes && attachmentPoint == other.attachmentPoint;
-    }
+    bool operator==(const AxisAlignedBoundingBox& other);
 
-    void updatePosition(FloatCoord<3> externalBodyPos) override
-    {
-        position = attachmentPoint + externalBodyPos;
-    }
+    void updatePosition(FloatCoord<3> externalBodyPos) override;
 
     inline double getX() const{
         return axes[0];

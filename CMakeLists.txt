@@ -13,19 +13,33 @@ link_directories(/usr/lib/x86_64-linux-gnu/qt5/)
 add_executable(Newtonian_Physics_Sandbox
         include/ntphyssbox.hpp
         src/examples/lonelySphere.cpp
-        src/boundingObject.hpp
-        src/boundingObjectTree.hpp
-        src/boundingSphere.hpp
+        src/physics/bounding/boundingObject.hpp
+        src/physics/bounding/boundingObjectTree.hpp
+        src/physics/bounding/boundingSphere.hpp
         src/cell.hpp
-        src/collision.hpp
-        src/collisionBody.hpp
-        src/composedSpheresCB.hpp
-        src/collisionDetection.hpp
-        src/collisionTreeDetection.hpp
-        src/collisionResolve.hpp
-        src/tensor.hpp
-        src/writer.hpp
-        src/Initializer.hpp
-        src/composedSpheresCB.cpp
-        src/collisionResolve.cpp
-        src/collisionBody.cpp src/npsworld.cpp src/npsworld.hpp src/axisalignedboundingbox.cpp src/axisalignedboundingbox.hpp src/examples/twospherescollision.cpp src/collisionbodyptr.hpp src/examples/billiardBalls.cpp src/examples/NewtonsBalls.cpp)
+        src/physics/collision/collision.hpp
+        src/physics/body/collisionBody.hpp
+        src/physics/body/composedSpheresCB.hpp
+        src/physics/collision/collisionDetection.hpp
+        src/physics/collision/collisionTreeDetection.hpp
+        src/physics/collision/collisionResolve.hpp
+        src/math/tensor.hpp
+        src/shell/writer.hpp
+        src/shell/initializer.hpp
+        src/physics/body/composedSpheresCB.cpp
+        src/physics/collision/collisionResolve.cpp
+        src/physics/body/collisionBody.cpp
+        src/shell/npsworld.cpp
+        src/shell/npsworld.hpp
+        src/physics/bounding/axisalignedboundingbox.cpp
+        src/physics/bounding/axisalignedboundingbox.hpp
+        src/examples/twospherescollision.cpp
+        src/examples/billiardBalls.cpp
+        src/examples/NewtonsBalls.cpp
+        src/import/npsimporter.cpp
+        src/import/npsimporter.hpp
+        src/examples/singleSphereOBJ.cpp
+        src/physics/bounding/boundingSphere.cpp
+        src/physics/collision/collision.cpp
+        src/shell/initializer.cpp
+        src/shell/writer.cpp)

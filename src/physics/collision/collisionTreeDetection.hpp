@@ -1,9 +1,9 @@
 #ifndef NEWTONIAN_PHYSICS_SANDBOX_COLLISIONTREEDETECTION_HPP
 #define NEWTONIAN_PHYSICS_SANDBOX_COLLISIONTREEDETECTION_HPP
 
-#include "boundingObjectTree.hpp"
+#include "physics/bounding/boundingObjectTree.hpp"
 #include "collisionDetection.hpp"
-#include "composedSpheresCB.hpp"
+#include "physics/body/composedSpheresCB.hpp"
 
 /**
  * Explores the objects for collision using bounding object tree

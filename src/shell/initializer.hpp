@@ -3,33 +3,18 @@
 
 #include <list>
 #include <map>
-#include "composedSpheresCB.hpp"
+#include "physics/body/composedSpheresCB.hpp"
 
 //TODO should import from Blender
 class NPSInitializer : public SimpleInitializer<NPSCell>
 {
 public:
 
-    NPSInitializer(const Coord<3>& dimensions, unsigned steps) :
-        SimpleInitializer<NPSCell>(dimensions, steps)
-    {}
+    NPSInitializer(const Coord<3>& dimensions, unsigned steps);
 
-    void grid(GridBase<NPSCell, 3>* target) override
-    {
-        CoordBox<3> box = target->boundingBox();
-        for (auto& collisionBody : collisionBodies){
-            cellsFilling[Coord<3>(collisionBody.getPos())].insert(collisionBody);
-        }
-        for (auto& pair : cellsFilling){
-            target->set(pair.first, pair.second);
-        }
-    }
+    void grid(GridBase<NPSCell, 3>* target) override;
 
-    inline
-    void addCollisionBody(ComposedSpheresCB& collisionBody)
-    {
-        collisionBodies.push_back(collisionBody);
-    }
+    void addCollisionBody(ComposedSpheresCB& collisionBody);
 
 //    inline void addCollisionBody(std::list<ComposedSpheresCB>& container){
 //        collisionBodies.splice(collisionBodies.end(), container);
