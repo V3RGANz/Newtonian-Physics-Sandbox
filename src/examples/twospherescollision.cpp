@@ -19,7 +19,7 @@ int main()
 
     npsWorld.addBody("first", a);
 
-//    npsWorld.addBody("second", b);
+    npsWorld.addBody("second", b);
     std::cout << "twospherescollision\n";
     npsWorld.start();
 
