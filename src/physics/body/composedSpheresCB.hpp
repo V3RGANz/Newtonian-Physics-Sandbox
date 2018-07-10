@@ -59,7 +59,7 @@ public:
         //It'd be good to update-on-use, but we have constant copy
         //It's not a big problem to optimize, but left for later work
 
-        boundingObjectTree.updateBoundingsPositions(position);
+//        boundingObjectTree.updateBoundingsPositions(position);
 
         int i = 0;
         for (auto& collisionBody : hood){
@@ -68,9 +68,6 @@ public:
         }
         if (i!= 1)
             std::cout << "HOOD size: " << i << "\n";
-////    for (auto& collision : currentCollisions){
-////        CollisionResolve collisionResolve(collision);
-////    }
         applyVelocity();
         applyAngularVelocity();
 
@@ -78,6 +75,10 @@ public:
         spheres.back().pos += velocity * DELTA_T;
         if (i!= 1)
             std::cout << "new pos: " << position << "\n";
+
+////    for (auto& collision : currentCollisions){
+////        CollisionResolve collisionResolve(collision);
+////    }
     }
 
     void rotate(FloatCoord<3> rotationVector) override;

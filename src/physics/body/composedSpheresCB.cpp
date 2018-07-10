@@ -58,6 +58,7 @@ bool collisionDetection(const ComposedSpheresCB::Sphere &first, const ComposedSp
 }
 
 //FIXME Collision not allows copying so currentCollisions commented
+//FIXME sphere case
 void ComposedSpheresCB::detectCollision(const ComposedSpheresCB &cBody)
 {
     if (position == cBody.getPos())

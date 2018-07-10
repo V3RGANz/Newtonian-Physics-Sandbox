@@ -1,6 +1,6 @@
 #include "collisionResolve.hpp"
 
-
+//FIXME: sphere case
 CollisionResolve::CollisionResolve(Collision &collision)
 {
     CollisionBody &cb1 = collision.first;
