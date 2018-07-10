@@ -60,7 +60,6 @@ void NPSWriter::stepFinished(const NPSWriter::GridType &grid, unsigned step, Wri
          << "} \n"
          << camera
          << "light_source { <20, 30, -30> color White}\n\n";
-
     CoordBox<3> box = grid.boundingBox();
     for (CoordBox<3>::Iterator j = box.begin(); j != box.end(); ++j) {
         const NPSCell &container = grid.get(*j);

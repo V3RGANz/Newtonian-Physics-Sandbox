@@ -16,8 +16,8 @@ std::string ComposedSpheresCB::toPOV() const
     << sphere.radius << "\n"
     <<
     "  texture {\n"
-    "    pigment {color White}\n"
-    "    finish {phong 0.9 metallic}\n"
+    << povRayTexture
+    <<
     "  }\n"
     "}\n";
 
@@ -34,18 +34,48 @@ void ComposedSpheresCB::addVelocity(const FloatCoord<3>& addDeltaV)
     deltaV += addDeltaV;
 }
 
-//FIXME Collision not allows copying so currentCollisions commented
-void ComposedSpheresCB::detectCollision(const CollisionBody &cBody)
+namespace
 {
-    CollisionTreeDetection<BoundingSphere, BoundingSphere> collisionTreeDetection(boundingObjectTree,
-                                                  cBody.getBoundingObjectTree());
-    collisionTreeDetection.search(position, cBody.getPos());
+bool collisionDetection(const ComposedSpheresCB::Sphere &first, const ComposedSpheresCB::Sphere &second)
+{
+    FloatCoord<3> relativeVector = (first.pos - second.pos);
+    FloatCoord<3> body1CollisionPoint;
+    FloatCoord<3> body2CollisionPoint;
 
-    while (collisionTreeDetection.hasUnhandledCollisions()){
-        Collision current = collisionTreeDetection.getNextCollision(*this, cBody);
-        CollisionResolve collisionResolve(current);
-//        currentCollisions.push_back(collisionTreeDetection.getNextCollision(*this, cBody));
+    if (relativeVector.length() == 0) {
+        body1CollisionPoint = first.pos;
+        body2CollisionPoint = first.pos;
+        return true;
     }
+    else if (relativeVector.length() < first.radius + second.radius) {
+        body1CollisionPoint = relativeVector * (first.radius
+            / relativeVector.length()); // maybe better use relativeVector - other.radius?
+        body2CollisionPoint = -relativeVector * (second.radius / relativeVector.length());
+        return true;
+    }
+    return false;
+}
+}
+
+//FIXME Collision not allows copying so currentCollisions commented
+void ComposedSpheresCB::detectCollision(const ComposedSpheresCB &cBody)
+{
+    if (position == cBody.getPos())
+        return;
+    std::cout << "detecting collision...: pos1: " << position << " pos2: " << cBody.position << "\n";
+    if (collisionDetection(spheres.back(), cBody.spheres.back())) {
+        Collision current = {*this, cBody, position - cBody.position, cBody.position - position};
+        CollisionResolve collisionResolve(current);
+    }
+//    CollisionTreeDetection<BoundingSphere, BoundingSphere> collisionTreeDetection(boundingObjectTree,
+//                                                  cBody.getBoundingObjectTree());
+//    collisionTreeDetection.search(position, cBody.getPos());
+//
+//    while (collisionTreeDetection.hasUnhandledCollisions()){
+//        Collision current = collisionTreeDetection.getNextCollision(*this, cBody);
+//        CollisionResolve collisionResolve(current);
+////        currentCollisions.push_back(collisionTreeDetection.getNextCollision(*this, cBody));
+//    }
 }
 const BoundingObjectTree<BoundingSphere>& ComposedSpheresCB::getBoundingObjectTree() const
 {
@@ -167,6 +197,7 @@ void ComposedSpheresCB::setVelocity(FloatCoord<3> velocityVector)
 }
 void ComposedSpheresCB::setPosition(FloatCoord<3> position)
 {
+    spheres.back().pos = position;
     this->position = position;
 }
 //ComposedSpheresCB &ComposedSpheresCB::operator=(const ComposedSpheresCB &other)
@@ -197,18 +228,19 @@ void ComposedSpheresCB::setPosition(FloatCoord<3> position)
 //    spheres             = std::move(other.spheres);
 //    return *this;
 //}
-//ComposedSpheresCB::ComposedSpheresCB(const ComposedSpheresCB &other)
-//    : angularVelocity(other.angularVelocity),
-//      velocity(other.velocity),
-//      position(other.position),
-//      boundingObjectTree(other.boundingObjectTree),
-//      inertialTensor(other.inertialTensor),
-//      orientation(other.orientation),
-//      mass(other.mass),
-//      myAABB(other.myAABB),
-//      acceleration(other.acceleration),
-//      spheres(other.spheres)
-//{}
+ComposedSpheresCB::ComposedSpheresCB(const ComposedSpheresCB &other)
+    : angularVelocity(other.angularVelocity),
+      velocity(other.velocity),
+      position(other.position),
+      boundingObjectTree(other.boundingObjectTree),
+      inertialTensor(other.inertialTensor),
+      orientation(other.orientation),
+      mass(other.mass),
+      myAABB(other.myAABB),
+      acceleration(other.acceleration),
+      spheres(other.spheres),
+      povRayTexture(other.povRayTexture)
+{}
 ComposedSpheresCB::ComposedSpheresCB(const std::list<ComposedSpheresCB::Sphere> &spheres, double density)
     : spheres(spheres)
 {
@@ -216,10 +248,18 @@ ComposedSpheresCB::ComposedSpheresCB(const std::list<ComposedSpheresCB::Sphere> 
     boundingObjectTree.getBoundingObject().updatePosition(spheres.back().pos);
     //FIXME: Just a sphere case
     InertiaTensor<3, 3>(FloatCoord<3>(2.0 / 5 * mass * spheres.back().radius * spheres.back().radius));
-
+    position = spheres.back().pos;
     computeMass(density);
 }
 ComposedSpheresCB::ComposedSpheresCB(double density)
 {
     computeMass(density);
+}
+void ComposedSpheresCB::setTexture(const POVRayTexture &texture)
+{
+    povRayTexture = texture;
+}
+void ComposedSpheresCB::setAngularVelocity(const AngularVTensor<3, 3> &tensor)
+{
+    angularVelocity = tensor;
 }

@@ -29,6 +29,7 @@ public:
     }
 
 private:
+    Coord<3> dimensions;
     std::map<Coord<3>, NPSCell > cellsFilling;
     std::vector<ComposedSpheresCB> collisionBodies;
 };

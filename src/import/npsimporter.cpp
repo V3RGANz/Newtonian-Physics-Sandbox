@@ -26,7 +26,6 @@ inline void getRidOfNormals(std::vector<std::string> &tokens)
  */
 void SimpleOBJSpheresImporter::import(std::string filepath)
 {
-    std::cout << "SimpleOBJSpheresImporter::import" << std::endl;
     std::ifstream scene(filepath);
     if (scene) {
         // TODO: error handling
@@ -35,37 +34,21 @@ void SimpleOBJSpheresImporter::import(std::string filepath)
     std::string currentLine;
 
     while (true) {
-        if (!getline(scene, currentLine)) {
-            std::cout << "EOF\n";
+        if (!getline(scene, currentLine))
             return;
-        }
-        std::cout << "got line " << currentLine << std::endl;
-        if (currentLine.find("Mball") != std::string::npos) {
-            std::cout << "currentLine.find(\"Mball\") != std::string::npos" << std::endl;
+        if (currentLine.find("Mball") != std::string::npos)
             break;
-        }
     }
 
     std::vector<FloatCoord<3>> vertices;
     std::vector<std::string> LineTokens;
 
     while (true) {
-        if (!getline(scene, currentLine)) {
-            std::cout << "EOF\n";
+        if (!getline(scene, currentLine))
             return;
-        }
-        std::cout << "got line " << currentLine << std::endl;
         LineTokens = tokenizer(currentLine);
 
-        std::cout << "tokens: ";
-
-        for (auto token : LineTokens){
-            std::cout << token << " ";
-        }
-
-        std::cout << std::endl;
-
-        if (!LineTokens.empty()){
+        if (!LineTokens.empty()) {
             if (!LineTokens[0].empty()) {
                 if (LineTokens[0][0] == '#')
                     continue;
@@ -83,9 +66,7 @@ void SimpleOBJSpheresImporter::import(std::string filepath)
                               ::strtod(LineTokens[2].c_str(), nullptr),
                               ::strtod(LineTokens[3].c_str(), nullptr));
 
-        std::cout << "vertex read: " << vertices.back() << std::endl;
     }
-    std::cout << "vertices.size(): " << vertices.size() << std::endl;
 
     while (true) {
         if (!LineTokens.empty()) {
@@ -101,15 +82,9 @@ void SimpleOBJSpheresImporter::import(std::string filepath)
     std::map<FloatCoord<3>, int> vertexSets;
     std::map<int, std::set<FloatCoord<3> > > setNumbers;
     int setNumber = 0;
-    std::cout << "face found: " << std::endl;
 
     while (true) {
         getRidOfNormals(LineTokens);
-        std::cout << "got Rid Of Normals" << std::endl;
-
-        for (auto token : LineTokens)
-            std::cout << token << " ";
-        std::cout << "\n";
 
         std::set<int> foundSets;
         std::set<FloatCoord<3> > unnamedVertices;
@@ -172,7 +147,7 @@ void SimpleOBJSpheresImporter::import(std::string filepath)
     for (auto setPair : setNumbers) {
         auto curSet = setPair.second;
         FloatCoord<3> position = FloatCoord<3>(0);
-        for (auto vertex : curSet){
+        for (auto vertex : curSet) {
             position += vertex;
         }
         position /= curSet.size();

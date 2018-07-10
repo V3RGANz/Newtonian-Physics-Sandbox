@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(Newtonian_Physics_Sandbox)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 include_directories(include)
 include_directories(src)
@@ -42,4 +42,4 @@ add_executable(Newtonian_Physics_Sandbox
         src/physics/bounding/boundingSphere.cpp
         src/physics/collision/collision.cpp
         src/shell/initializer.cpp
-        src/shell/writer.cpp)
+        src/shell/writer.cpp src/shell/povraytexture.cpp src/shell/povraytexture.hpp src/math/tensor.cpp)

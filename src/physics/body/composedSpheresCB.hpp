@@ -29,7 +29,7 @@ public:
 
     explicit ComposedSpheresCB(const std::list<Sphere>& spheres, double density = 1);
 
-//    ComposedSpheresCB(const ComposedSpheresCB& other);
+    ComposedSpheresCB(const ComposedSpheresCB& other);
 
     void addSphere(FloatCoord<3> pos, double radius);
     std::string toPOV() const override;
@@ -45,15 +45,12 @@ public:
         deltaW = AngularVTensor<3, 3>(0);
     }
 
-    ~ComposedSpheresCB() override
-    {
-        spheres.clear();
-    }
+    ~ComposedSpheresCB() override = default;
 
     void addAngularVelocity(const AngularVTensor<3, 3> &tensor) override;
 
 //    void update(const NPSCell &hood, const int nanostep) override ;
-
+    void setTexture(const POVRayTexture &texture) override;
     //FIXME Collision not allows copying so currentCollisions commented
     template<typename HOOD>
     void update(const HOOD &hood, const int nanostep)
@@ -61,23 +58,33 @@ public:
         //FIXME: redundant update of boundingObjectTree
         //It'd be good to update-on-use, but we have constant copy
         //It's not a big problem to optimize, but left for later work
+
         boundingObjectTree.updateBoundingsPositions(position);
 
+        int i = 0;
         for (auto& collisionBody : hood){
+            ++i;
             detectCollision(collisionBody);
         }
-//    for (auto& collision : currentCollisions){
-//        CollisionResolve collisionResolve(collision);
-//    }
-        position += velocity * DELTA_T;
-
+        if (i!= 1)
+            std::cout << "HOOD size: " << i << "\n";
+////    for (auto& collision : currentCollisions){
+////        CollisionResolve collisionResolve(collision);
+////    }
         applyVelocity();
         applyAngularVelocity();
+
+        position += velocity * DELTA_T;
+        spheres.back().pos += velocity * DELTA_T;
+        if (i!= 1)
+            std::cout << "new pos: " << position << "\n";
     }
 
     void rotate(FloatCoord<3> rotationVector) override;
 
-    void detectCollision(const CollisionBody &cBody) override ;
+    void setAngularVelocity(const AngularVTensor<3, 3> &tensor) override;
+
+    void detectCollision(const ComposedSpheresCB &cBody);
 
     void resolveCollision(Collision &collision) override ;
 
@@ -133,22 +140,26 @@ private:
     AngularVTensor<3, 3>    angularVelocity = AngularVTensor<3, 3>(0);
     InertiaTensor<3, 3>     inertialTensor;
     //FIXME: fits to sphere case only
-    Matrix<3, 3>            orientation     = Matrix<3, 3>(FloatCoord<3>(1));
+    Matrix<3, 3>            orientation     = Matrix<3, 3>(FloatCoord<3>(1,1,1));
     FloatCoord<3>           deltaV;
     AngularVTensor<3, 3>    deltaW;
+    POVRayTexture           povRayTexture   = POVRayTexture();
 public:
     void setVelocity(FloatCoord<3> velocityVector) override;
 private:
     std::list<Sphere>       spheres;
-//    std::list<Collision>    currentCollisions;
-//    std::map<CollisionBody*,
-//             Collision>     consideredCollisions;
 };
 
 class NPSCell : public BoxCell<std::vector<ComposedSpheresCB> >
 {
 public:
+    inline explicit NPSCell(
+        const FloatCoord<DIM>& origin = Coord<DIM>(),
+        const FloatCoord<DIM>& dimension = Coord<DIM>())
+            : BoxCell<std::vector<ComposedSpheresCB> > (origin, dimension)
+    {}
     typedef MyAPI API;
+
 };
 
 #endif // !NEWTONIAN_PHYSICS_SANDBOX_COMPOSEDSPHERESCB_HPP

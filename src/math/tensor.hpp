@@ -46,6 +46,7 @@ public:
         for (int i = 0; i < DIM1; ++i)
             for (int j = 0; j < DIM2; ++j)
                 dims[i][j] = other.dims[i][j];
+        return *this;
     }
 
     inline
@@ -68,14 +69,7 @@ public:
         for (int i = 0; i < DIM1; i++)
             for (int j = 0; j < DIM2; i++)
                 ret[i] += dims[i][j] * other[j];
-    }
-
-    inline
-    Matrix<3, 3> &operator=(const double &scalar)
-    {
-        for (int i = 0; i < DIM1; ++i)
-            for (int j = 0; j < DIM2; ++j)
-                dims[i][j] = scalar;
+        return ret;
     }
 
     inline
@@ -87,21 +81,20 @@ public:
             for (int k = 0; k < DIM1; ++k)
                 for (int j = 0; j < DIM2; ++j)
                     ret[i][j] += dims[i][k] * other[k][j];
+        return ret;
     }
 
     inline
     Matrix<3, 3> &operator*=(const Matrix<3, 3> &other)
     {
         Matrix<3, 3> ret = 0.0;
-        *this = 0.0;
 
         for (int i = 0; i < DIM1; ++i)
             for (int k = 0; k < DIM1; ++k)
                 for (int j = 0; j < DIM2; ++j)
                     ret[i][j] += dims[i][k] * other[k][j];
 
-        *this = ret;
-        return *this;
+        return *this = ret;
     }
 
     inline
@@ -134,6 +127,7 @@ public:
         for (int i = 0; i < DIM1; ++i)
             for (int j = 0; j < DIM2; ++j)
                 ret[i][j] = dims[i][j] + other[i][j];
+        return ret;
     }
 
     inline
@@ -142,10 +136,11 @@ public:
         for (int i = 0; i < DIM1; ++i)
             for (int j = 0; j < DIM2; ++j)
                 dims[i][j] += other[i][j];
+        return *this;
     }
 
     virtual
-    Matrix<3, 3> &transpose(void)
+    Matrix<3, 3> &transpose()
     {
         for (int i = 0; i < DIM1; ++i)
             for (int j = 0; j < i; ++j)
@@ -155,7 +150,7 @@ public:
     }
 
     virtual
-    Matrix<3, 3> getTranspose(void)
+    Matrix<3, 3> getTranspose()
     {
         Matrix<3, 3> ret;
 
@@ -169,7 +164,7 @@ public:
         return ret;
     }
 
-    double determinant(void) const {
+    double determinant() const {
         return
             dims[0][0] * dims[1][1] * dims[2][2] +
             dims[0][1] * dims[1][2] * dims[2][0] +
@@ -179,12 +174,12 @@ public:
             dims[0][0] * dims[1][2] * dims[2][1];
     }
 
-    Matrix<3, 3>(std::initializer_list<int> list){
-    };
+//    Matrix<3, 3>(std::initializer_list<int> list){
+//    }
 
     // FIXME add exception for non-invertible matrix
     // TODO not such hardcoded
-    Matrix<3, 3> &inverse(void)
+    Matrix<3, 3> &inverse()
     {
         Matrix<3, 3> ret = *this;
 
@@ -208,13 +203,16 @@ public:
             for (int j = 0; j < DIM2; ++j) {
                 dims[i][j] /= det;
             }
+        return *this;
     }
 
-    Matrix<3, 3> getInversed(void)
+    Matrix<3, 3> getInversed()
     {
         Matrix <3, 3> ret;
         return ret.inverse();
     }
+
+    friend std::ostream& operator<<(std::ostream &os, const Matrix<3,3> &matrix);
 
 protected:
     double data[9];
@@ -300,6 +298,7 @@ public:
 
         dims[1][2] = -coord[0];
         dims[2][1] = coord[0];
+        return *this;
     }
 
     inline
@@ -357,12 +356,12 @@ public:
     {
     }
 
-    template<template<int> class COORD>
-    inline
-    InertiaTensor<3, 3> &operator=(const COORD<3> &coord)
-    {
-//TODO
-    }
+//    template<template<int> class COORD>
+//    inline
+//    InertiaTensor<3, 3> &operator=(const COORD<3> &coord)
+//    {
+////TODO
+//    }
 
     inline
     FloatCoord<3> getFloatCoord(void)

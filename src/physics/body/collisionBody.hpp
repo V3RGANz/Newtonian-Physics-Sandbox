@@ -9,6 +9,7 @@
 #include "math/tensor.hpp"
 #include "physics/bounding/boundingSphere.hpp"
 #include "physics/bounding/axisalignedboundingbox.hpp"
+#include "shell/povraytexture.hpp"
 
 using namespace LibGeoDecomp;
 
@@ -29,8 +30,6 @@ public:
 //    static constexpr double DELTA_T = 0.1;
 
 //    virtual void update(const NPSCell &hood, const int nanostep) = 0;
-
-    virtual void detectCollision(const CollisionBody &cBody) = 0;
 
     virtual void resolveCollision(Collision &collision) = 0;
 
@@ -58,6 +57,8 @@ public:
 
     virtual void addAngularVelocity(const AngularVTensor<3, 3>&) = 0;
 
+    virtual void setAngularVelocity(const AngularVTensor<3, 3>&) = 0;
+
     virtual std::string toPOV() const = 0;
 
     virtual void getCollison(CollisionBody& me) const = 0;
@@ -70,6 +71,7 @@ public:
 
     virtual void setPosition(FloatCoord<3> position) = 0;
 
+    virtual void setTexture(const POVRayTexture&) = 0;
 //    virtual void setAngularVelocity(FloatCoord<3> position) = 0;
 
     //FIXME: should be pure
