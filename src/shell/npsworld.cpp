@@ -18,7 +18,7 @@ void NPSWorld::start()
         return;
     }
 
-    std::cout << "world size: " << size;
+    std::cout << "world size: " << size << "\n\n";
     npsInitializer = new NPSInitializer(size, steps);
 
     for (auto &group : Groups) {
@@ -54,6 +54,7 @@ void NPSWorld::addBody(const std::string &name, const ComposedSpheresCB &collisi
     auto &NPSGeneral = Groups["NPSGeneral"];
     bodiesGroups[name] = &NPSGeneral;
     NPSGeneral.addBody(&body);
+    body.setid(count++);
 }
 void NPSWorld::compareBox(const CollisionBody &body)
 {

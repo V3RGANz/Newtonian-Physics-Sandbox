@@ -45,6 +45,8 @@ public:
 
     virtual double getMass() const = 0;
 
+    virtual double getInvMass() const = 0;
+
     virtual AxisAlignedBoundingBox getAABB() const = 0;
 
     virtual Matrix<3, 3> getOrientation() const = 0;
@@ -70,6 +72,8 @@ public:
     virtual void setVelocity(FloatCoord<3> velocityVector) = 0;
 
     virtual void setPosition(FloatCoord<3> position) = 0;
+
+    virtual void moveAfterUpdate(FloatCoord<3> position) = 0;
 
     virtual void setTexture(const POVRayTexture&) = 0;
 //    virtual void setAngularVelocity(FloatCoord<3> position) = 0;

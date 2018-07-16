@@ -18,7 +18,8 @@ public:
     Matrix() = default;
 
     template<template<int> class COORD>
-    Matrix(const COORD<3>& diagonal){
+    Matrix(const COORD<3> &diagonal)
+    {
         for (int i = 0; i < DIM1; ++i)
             for (int j = 0; j < DIM2; ++j)
                 dims[i][j] = (i == j) ? diagonal[i] : 0;
@@ -31,13 +32,14 @@ public:
                 dims[i][j] = scalar;
     }
 
-    static inline
+    static
     Matrix<3, 3> diagonal(double scalar)
     {
         Matrix<3, 3> ret;
         for (int i = 0; i < DIM1; ++i)
             for (int j = 0; j < DIM2; ++j)
                 ret.dims[i][j] = static_cast<double>(i == j) * scalar;
+        return ret;
     }
 
     inline
@@ -65,9 +67,9 @@ public:
     inline
     FloatCoord<3> operator*(const COORD<3> &other)
     {
-        FloatCoord<3> ret = FloatCoord<3>(0);
-        for (int i = 0; i < DIM1; i++)
-            for (int j = 0; j < DIM2; i++)
+        auto ret = FloatCoord<3>(0);
+        for (int i = 0; i < DIM1; ++i)
+            for (int j = 0; j < DIM2; ++j)
                 ret[i] += dims[i][j] * other[j];
         return ret;
     }
@@ -164,20 +166,21 @@ public:
         return ret;
     }
 
-    double determinant() const {
+    double determinant() const
+    {
         return
             dims[0][0] * dims[1][1] * dims[2][2] +
-            dims[0][1] * dims[1][2] * dims[2][0] +
-            dims[0][2] * dims[1][0] * dims[2][1] -
-            dims[0][2] * dims[1][1] * dims[2][0] -
-            dims[0][1] * dims[1][0] * dims[2][2] -
-            dims[0][0] * dims[1][2] * dims[2][1];
+                dims[0][1] * dims[1][2] * dims[2][0] +
+                dims[0][2] * dims[1][0] * dims[2][1] -
+                dims[0][2] * dims[1][1] * dims[2][0] -
+                dims[0][1] * dims[1][0] * dims[2][2] -
+                dims[0][0] * dims[1][2] * dims[2][1];
     }
 
 //    Matrix<3, 3>(std::initializer_list<int> list){
 //    }
 
-    // FIXME add exception for non-invertible matrix
+    virtual // FIXME add exception for non-invertible matrix
     // TODO not such hardcoded
     Matrix<3, 3> &inverse()
     {
@@ -185,7 +188,8 @@ public:
 
         double det = ret.determinant();
 
-        auto matrixMinor = [ret](int i, int j, int k, int l) -> double {
+        auto matrixMinor = [ret](int i, int j, int k, int l) -> double
+        {
             return ret[i][k] * ret[j][l] - ret[i][l] * ret[j][k];
         };
 
@@ -208,11 +212,11 @@ public:
 
     Matrix<3, 3> getInversed()
     {
-        Matrix <3, 3> ret;
+        Matrix<3, 3> ret;
         return ret.inverse();
     }
 
-    friend std::ostream& operator<<(std::ostream &os, const Matrix<3,3> &matrix);
+    friend std::ostream &operator<<(std::ostream &os, const Matrix<3, 3> &matrix);
 
 protected:
     double data[9];
@@ -243,9 +247,11 @@ class AngularVTensor<3, 3>: public Matrix<3, 3>
 {
 public:
 
-    AngularVTensor() : Matrix<3, 3>() {};
+    AngularVTensor()
+        : Matrix<3, 3>()
+    {};
 
-    AngularVTensor(const Matrix<3, 3>& matrix)
+    AngularVTensor(const Matrix<3, 3> &matrix)
     {
         for (int i = 0; i < DIM1; ++i)
             for (int j = 0; j < DIM2; ++j)
@@ -339,7 +345,8 @@ public:
 
     InertiaTensor() = default;
 
-    InertiaTensor(const Matrix<3, 3>& matrix) {
+    InertiaTensor(const Matrix<3, 3> &matrix)
+    {
         for (int i = 0; i < DIM1; ++i) {
             for (int j = 0; j < DIM2; ++j) {
                 dims[i][j] = matrix[i][j];
@@ -347,12 +354,23 @@ public:
         }
     }
 
-    explicit InertiaTensor(double scalar) : Matrix<3, 3>(scalar)
+    InertiaTensor(const InertiaTensor<3, 3> &matrix)
+    {
+        for (int i = 0; i < DIM1; ++i) {
+            for (int j = 0; j < DIM2; ++j) {
+                dims[i][j] = matrix[i][j];
+            }
+        }
+    }
+
+    explicit InertiaTensor(double scalar)
+        : Matrix<3, 3>(scalar)
     {
     }
 
     template<template<int> class COORD>
-    explicit InertiaTensor(const COORD<3> &diagonal) : Matrix<3, 3>(diagonal)
+    explicit InertiaTensor(const COORD<3> &diagonal)
+        : Matrix<3, 3>(diagonal)
     {
     }
 
@@ -379,5 +397,13 @@ public:
         return *this;
     }
 
+    //FIXME
+    Matrix<3, 3> &inverse() override
+    {
+        for (int i = 0; i < DIM1; ++i)
+            for (int j = 0; j < DIM2; ++j)
+                if (dims[i][j] != 0)
+                    dims[i][j] = 1.0f / dims[i][j];
+    }
 };
 #endif //!NEWTONIAN_PHYSICS_SANDBOX_TENSOR_HPP

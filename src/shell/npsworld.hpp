@@ -80,6 +80,7 @@ private:
     std::map<std::string, BodiesGroup> Groups;
     NPSInitializer *npsInitializer = nullptr;
     Coord<3> size;
+    int count = 0;
 };
 
 

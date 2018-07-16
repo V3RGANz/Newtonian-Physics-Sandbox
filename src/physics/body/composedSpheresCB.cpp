@@ -7,19 +7,19 @@ std::string ComposedSpheresCB::toPOV() const
 {
     std::stringstream buf;
     for (const Sphere &sphere : spheres)
-    buf <<
-    "sphere {\n"
-    "  <"
-    << sphere.pos[0] << ", "
-    << sphere.pos[1] << ", "
-    << sphere.pos[2] << ">, "
-    << sphere.radius << "\n"
-    <<
-    "  texture {\n"
-    << povRayTexture
-    <<
-    "  }\n"
-    "}\n";
+        buf <<
+            "sphere {\n"
+            "  <"
+            << sphere.pos[0] << ", "
+            << sphere.pos[1] << ", "
+            << sphere.pos[2] << ">, "
+            << sphere.radius << "\n"
+            <<
+            "  texture {\n"
+            << povRayTexture
+            <<
+            "  }\n"
+            "}\n";
 
     return buf.str();
 }
@@ -29,11 +29,13 @@ void ComposedSpheresCB::addSphere(FloatCoord<3> pos, double radius)
     spheres.emplace_back(pos, radius);
 }
 
-void ComposedSpheresCB::addVelocity(const FloatCoord<3>& addDeltaV)
+void ComposedSpheresCB::addVelocity(const FloatCoord<3> &addDeltaV)
 {
     deltaV += addDeltaV;
 }
 
+
+// temporary function
 namespace
 {
 bool collisionDetection(const ComposedSpheresCB::Sphere &first, const ComposedSpheresCB::Sphere &second)
@@ -63,7 +65,6 @@ void ComposedSpheresCB::detectCollision(const ComposedSpheresCB &cBody)
 {
     if (position == cBody.getPos())
         return;
-    std::cout << "detecting collision...: pos1: " << position << " pos2: " << cBody.position << "\n";
     if (collisionDetection(spheres.back(), cBody.spheres.back())) {
         Collision current = {*this, cBody, position - cBody.position, cBody.position - position};
         CollisionResolve collisionResolve(current);
@@ -78,7 +79,7 @@ void ComposedSpheresCB::detectCollision(const ComposedSpheresCB &cBody)
 ////        currentCollisions.push_back(collisionTreeDetection.getNextCollision(*this, cBody));
 //    }
 }
-const BoundingObjectTree<BoundingSphere>& ComposedSpheresCB::getBoundingObjectTree() const
+const BoundingObjectTree<BoundingSphere> &ComposedSpheresCB::getBoundingObjectTree() const
 {
     return boundingObjectTree;
 }
@@ -101,8 +102,8 @@ double ComposedSpheresCB::getMass() const
 
 AxisAlignedBoundingBox ComposedSpheresCB::getAABB() const
 {
-    if (myAABB.empty()){
-        if (spheres.empty()){
+    if (myAABB.empty()) {
+        if (spheres.empty()) {
             return myAABB;
         }
         double minX = spheres.front().pos[0];
@@ -111,7 +112,7 @@ AxisAlignedBoundingBox ComposedSpheresCB::getAABB() const
         double maxX = spheres.front().pos[0];
         double maxY = spheres.front().pos[1];
         double maxZ = spheres.front().pos[2];
-        for (auto& sphere: spheres) {
+        for (auto &sphere: spheres) {
             if (sphere.pos[0] - sphere.radius < minX)
                 minX = sphere.pos[0] - sphere.radius;
             if (sphere.pos[1] - sphere.radius < minY)
@@ -119,16 +120,17 @@ AxisAlignedBoundingBox ComposedSpheresCB::getAABB() const
             if (sphere.pos[2] - sphere.radius < minZ)
                 minZ = sphere.pos[2] - sphere.radius;
             if (sphere.pos[0] + sphere.radius > maxX)
-                maxX = sphere.pos[0] + sphere.radius ;
+                maxX = sphere.pos[0] + sphere.radius;
             if (sphere.pos[1] + sphere.radius > maxY)
-                maxY = sphere.pos[1] + sphere.radius ;
+                maxY = sphere.pos[1] + sphere.radius;
             if (sphere.pos[2] + sphere.radius > maxZ)
-                maxZ = sphere.pos[2] + sphere.radius ;
+                maxZ = sphere.pos[2] + sphere.radius;
         }
         return {FloatCoord<3>(maxX - minX, maxY - minY, maxZ - minZ),
                 FloatCoord<3>(0),
                 position - FloatCoord<3>(minX, minY, minZ)};
-    } else {
+    }
+    else {
         return myAABB;
     }
 }
@@ -165,7 +167,7 @@ void ComposedSpheresCB::addAngularVelocity(const AngularVTensor<3, 3> &tensor)
 }
 CollisionBody *ComposedSpheresCB::copy() const
 {
-    auto * cp = new ComposedSpheresCB(spheres);
+    auto *cp = new ComposedSpheresCB(spheres);
     cp->angularVelocity = angularVelocity;
     cp->velocity = velocity;
     cp->position = position;
@@ -182,11 +184,13 @@ void ComposedSpheresCB::rotate(FloatCoord<3> rotationVector)
     rotationX[1][2] = -sin(rotationVector[0]);
     rotationX[2][1] = sin(rotationVector[0]);
 
-    Matrix<3, 3> rotationY(FloatCoord<3>(cos(rotationVector[1]), 1, cos(rotationVector[1])));
+    Matrix<3, 3> rotationY(FloatCoord<3>(cos(rotationVector[1]),
+    1, cos(rotationVector[1])));
     rotationY[0][2] = -sin(rotationVector[1]);
     rotationY[2][0] = sin(rotationVector[1]);
 
-    Matrix<3, 3> rotationZ(FloatCoord<3>(cos(rotationVector[2]), cos(rotationVector[2]), 1));
+    Matrix<3, 3> rotationZ(FloatCoord<3>(cos(rotationVector[2]), cos(rotationVector[2]),
+    1));
     rotationZ[0][1] = -sin(rotationVector[2]);
     rotationZ[1][0] = sin(rotationVector[2]);
     orientation *= rotationX * rotationY * rotationZ;
@@ -237,10 +241,13 @@ ComposedSpheresCB::ComposedSpheresCB(const ComposedSpheresCB &other)
       inertialTensor(other.inertialTensor),
       orientation(other.orientation),
       mass(other.mass),
+      invMass(other.invMass),
       myAABB(other.myAABB),
       acceleration(other.acceleration),
       spheres(other.spheres),
-      povRayTexture(other.povRayTexture)
+      povRayTexture(other.povRayTexture),
+      id(other.id),
+      version(other.version)
 {}
 ComposedSpheresCB::ComposedSpheresCB(const std::list<ComposedSpheresCB::Sphere> &spheres, double density)
     : spheres(spheres)
@@ -248,9 +255,9 @@ ComposedSpheresCB::ComposedSpheresCB(const std::list<ComposedSpheresCB::Sphere> 
     boundingObjectTree.setBoundingObject(BoundingSphere(spheres.back().radius, FloatCoord<3>(0)));
     boundingObjectTree.getBoundingObject().updatePosition(spheres.back().pos);
     //FIXME: Just a sphere case
-    InertiaTensor<3, 3>(FloatCoord<3>(2.0 / 5 * mass * spheres.back().radius * spheres.back().radius));
-    position = spheres.back().pos;
     computeMass(density);
+    inertialTensor = InertiaTensor<3, 3>::diagonal(2.0 / 5 * mass * spheres.back().radius * spheres.back().radius);
+    position = spheres.back().pos;
 }
 ComposedSpheresCB::ComposedSpheresCB(double density)
 {
@@ -263,4 +270,21 @@ void ComposedSpheresCB::setTexture(const POVRayTexture &texture)
 void ComposedSpheresCB::setAngularVelocity(const AngularVTensor<3, 3> &tensor)
 {
     angularVelocity = tensor;
+}
+void ComposedSpheresCB::moveAfterUpdate(FloatCoord<3> position)
+{
+
+}
+double ComposedSpheresCB::getInvMass() const
+{
+    return invMass;
+}
+void ComposedSpheresCB::computeMass(double density)
+{
+    //TODO: this is hard process to consider all intersections of spheres
+    //TODO: check this example https://github.com/severinstrobl/overlap
+    //FIXME: actually works only with spheres
+    double radius = spheres.back().radius;
+    mass = 4 * density * M_PI * radius * radius * radius / 3;
+    invMass = 1 / mass;
 }

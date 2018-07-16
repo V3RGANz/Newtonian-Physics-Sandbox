@@ -8,11 +8,6 @@ int main()
     double radius = 1;
     double speed = 1;
 
-    ComposedSpheresCB sphere = ComposedSpheresCB{
-        {
-            {FloatCoord<3>{0,0,0}, 0.5}
-        }
-    };
     ComposedSpheresCB spheres[5] = {
         ComposedSpheresCB{{
              {FloatCoord<3>{1,0,0}, 0.5}
