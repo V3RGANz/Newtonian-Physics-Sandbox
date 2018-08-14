@@ -5,24 +5,21 @@
 
 int main()
 {
-    double radius = 1;
-    double speed = 1;
-
     ComposedSpheresCB spheres[5] = {
         ComposedSpheresCB{{
-             {FloatCoord<3>{1,0,0}, 0.5}
+             {FloatCoord<3>(1,0,0), 0.5}
         }},
         ComposedSpheresCB{{
-             {FloatCoord<3>{4,0,0}, 0.5}
+             {FloatCoord<3>(4,0,0), 0.5}
         }},
         ComposedSpheresCB{{
-             {FloatCoord<3>{6.1,0,0}, 0.5}
+             {FloatCoord<3>(6.1,0,0), 0.5}
         }},
         ComposedSpheresCB{{
-             {FloatCoord<3>{8.2,0,0}, 0.5}
+             {FloatCoord<3>(8.2,0,0), 0.5}
         }},
         ComposedSpheresCB{{
-             {FloatCoord<3>{10.3,0,0}, 0.5}
+             {FloatCoord<3>(10.3,0,0), 0.5}
         }}
     };
 

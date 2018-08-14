@@ -20,10 +20,6 @@ inline void getRidOfNormals(std::vector<std::string> &tokens)
 }
 }
 
-/**
- * Load scene from .obj file. Ignores all except spheres
- * @param filepath path to .obj file
- */
 void SimpleOBJSpheresImporter::import(std::string filepath)
 {
     std::ifstream scene(filepath);

@@ -39,21 +39,45 @@ public:
         traverse(boundingObjectTree1, boundingObjectTree2);
     }
 
-    bool hasUnhandledCollisions(void)
+    bool hasUnhandledCollisions()
     {
-        return !firstCollisionPoints.empty();
+        return !collisionDataList.empty();
     }
 
     Collision getNextCollision(CollisionBody &first, const CollisionBody &second)
     {
-        FloatCoord<3> pos1to2 = firstCollisionPoints.back();
-        FloatCoord<3> pos2to1 = secondCollisionPoints.back();
-        firstCollisionPoints.pop_back();
-        secondCollisionPoints.pop_back();
-        return {first, second, pos1to2, pos2to1};
+//        FloatCoord<3> pos1to2 = firstCollisionPoints.back();
+//        FloatCoord<3> pos2to1 = secondCollisionPoints.back();
+//        firstCollisionPoints.pop_back();
+//        secondCollisionPoints.pop_back();
+        CollisionData collisionData = collisionDataList.back();
+        collisionDataList.pop_back();
+        return {
+            first,
+            second,
+            collisionData.pos1to2,
+            collisionData.pos2to1,
+            collisionData.firstCentre,
+            collisionData.secondCentre
+        };
     }
 
 private:
+    struct CollisionData
+    {
+        CollisionData(const FloatCoord<3> &pos1to2,
+                      const FloatCoord<3> &pos2to1,
+                      FloatCoord<3> firstCentre,
+                      FloatCoord<3> secondCentre)
+            : pos1to2(pos1to2), pos2to1(pos2to1), firstCentre(firstCentre), secondCentre(secondCentre)
+        {}
+
+        FloatCoord<3> pos1to2;
+        FloatCoord<3> pos2to1;
+        FloatCoord<3> firstCentre;
+        FloatCoord<3> secondCentre;
+
+    };
     /**
      * Localising and make simpler collision detection
      * TODO: make more readable
@@ -66,6 +90,10 @@ private:
                                                                boundingObjectTree21.getBoundingObject())) {
             if (boundingObjectTree11.getChildren().empty()) {
                 if (boundingObjectTree21.getChildren().empty()) {
+                    collisionDataList.emplace_back(collisionDetection.getFirstCollision(),
+                                                   collisionDetection.getSecondCollision(),
+                                                   boundingObjectTree11.getBoundingObject().getPosition(),
+                                                   boundingObjectTree21.getBoundingObject().getPosition());
                     firstCollisionPoints.push_back(collisionDetection.getFirstCollision());
                     secondCollisionPoints.push_back(collisionDetection.getSecondCollision());
                     return;
@@ -110,6 +138,10 @@ private:
                                                                                  boundingObjectTree21
                                                                                      .getBoundingObject())) {
             if (boundingObjectTree21.getChildren().empty()) {
+                collisionDataList.emplace_back(collisionDetection.getFirstCollision(),
+                                               collisionDetection.getSecondCollision(),
+                                               boundingObject1.getPosition(),
+                                               boundingObjectTree21.getBoundingObject().getPosition());
                 firstCollisionPoints.push_back(collisionDetection.getFirstCollision());
                 secondCollisionPoints.push_back(collisionDetection.getSecondCollision());
                 return;
@@ -134,6 +166,10 @@ private:
         if (collisionDetection.detectCollision<BoundingObject1, BoundingObject2>
             (boundingObjectTree11.getBoundingObject(), boundingObject2)) {
             if (boundingObjectTree11.getChildren().empty()) {
+                collisionDataList.emplace_back(collisionDetection.getFirstCollision(),
+                                               collisionDetection.getSecondCollision(),
+                                               boundingObjectTree11.getBoundingObject().getPosition(),
+                                               boundingObject2.getPosition());
                 firstCollisionPoints.push_back(collisionDetection.getFirstCollision());
                 secondCollisionPoints.push_back(collisionDetection.getSecondCollision());
                 return;
@@ -152,6 +188,7 @@ private:
     FloatCoord<3> externalBody2Pos;
     std::list<FloatCoord<3> > firstCollisionPoints;
     std::list<FloatCoord<3> > secondCollisionPoints;
+    std::list<CollisionData> collisionDataList;
     BoundingObjectTree<BoundingObject1> &boundingObjectTree1;
     const BoundingObjectTree<BoundingObject2> &boundingObjectTree2;
 };

@@ -16,3 +16,7 @@ double BoundingSphere::getRadius() const
 {
     return radius;
 }
+void BoundingSphere::rotate(AngularVTensor<3, 3> dW)
+{
+    attachmentPoint = dW * attachmentPoint;
+}

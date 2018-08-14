@@ -65,19 +65,19 @@ void ComposedSpheresCB::detectCollision(const ComposedSpheresCB &cBody)
 {
     if (position == cBody.getPos())
         return;
-    if (collisionDetection(spheres.back(), cBody.spheres.back())) {
-        Collision current = {*this, cBody, position - cBody.position, cBody.position - position};
-        CollisionResolve collisionResolve(current);
-    }
-//    CollisionTreeDetection<BoundingSphere, BoundingSphere> collisionTreeDetection(boundingObjectTree,
-//                                                  cBody.getBoundingObjectTree());
-//    collisionTreeDetection.search(position, cBody.getPos());
-//
-//    while (collisionTreeDetection.hasUnhandledCollisions()){
-//        Collision current = collisionTreeDetection.getNextCollision(*this, cBody);
+//    if (collisionDetection(spheres.back(), cBody.spheres.back())) {
+//        Collision current = {*this, cBody, position - cBody.position, cBody.position - position};
 //        CollisionResolve collisionResolve(current);
-////        currentCollisions.push_back(collisionTreeDetection.getNextCollision(*this, cBody));
 //    }
+    CollisionTreeDetection<BoundingSphere, BoundingSphere> collisionTreeDetection(boundingObjectTree,
+                                                  cBody.getBoundingObjectTree());
+    collisionTreeDetection.search(position, cBody.getPos());
+
+    while (collisionTreeDetection.hasUnhandledCollisions()){
+        Collision current = collisionTreeDetection.getNextCollision(*this, cBody);
+        CollisionResolve collisionResolve(current);
+//        currentCollisions.push_back(collisionTreeDetection.getNextCollision(*this, cBody));
+    }
 }
 const BoundingObjectTree<BoundingSphere> &ComposedSpheresCB::getBoundingObjectTree() const
 {

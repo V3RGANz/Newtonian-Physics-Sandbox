@@ -4,7 +4,7 @@
 // #include<tuple>
 
 #include <libgeodecomp.h>
-#include "collision.hpp"
+#include "physics/collision/collision.hpp"
 using namespace LibGeoDecomp;
 
 
@@ -23,7 +23,7 @@ class SphereShape
     }
     FloatCoord<3> getOtherLastCollision()
     {
-        return otherCollision;
+        return othupdateerCollision;
     }
 
 private:

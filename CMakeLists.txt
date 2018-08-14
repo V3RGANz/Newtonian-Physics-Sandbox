@@ -42,4 +42,4 @@ add_executable(Newtonian_Physics_Sandbox
         src/physics/bounding/boundingSphere.cpp
         src/physics/collision/collision.cpp
         src/shell/initializer.cpp
-        src/shell/writer.cpp src/shell/povraytexture.cpp src/shell/povraytexture.hpp src/math/tensor.cpp)
+        src/shell/writer.cpp src/shell/povraytexture.cpp src/shell/povraytexture.hpp src/math/tensor.cpp src/examples/composedSpheres.cpp)

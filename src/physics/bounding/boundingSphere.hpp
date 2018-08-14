@@ -17,7 +17,9 @@ public:
 
     void updatePosition(FloatCoord<3> externalBodyPos) override;
 
-    FloatCoord<3> getPosition(void) const;
+    void rotate(AngularVTensor<3, 3> dW) override;
+
+    FloatCoord<3> getPosition() const override;
 
     double getRadius() const;
 

@@ -4,6 +4,7 @@
 #include <list>
 #include <libgeodecomp.h>
 #include "boundingSphere.hpp"
+#include "../../math/tensor.hpp"
 
 using namespace LibGeoDecomp;
 
@@ -80,6 +81,11 @@ public:
         boundingObject.updatePosition(externalBodyPos);
         for (auto& node : nodes)
             node.updateBoundingsPositions(externalBodyPos);
+    }
+    void rotate(AngularVTensor<3, 3> dW)
+    {
+        for (auto& node : nodes)
+            node.rotate(dW);
     }
 private:
     BoundingSphere boundingObject;

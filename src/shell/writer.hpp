@@ -7,7 +7,9 @@ using namespace LibGeoDecomp;
 //#include "cell.hpp"
 #include "physics/body/collisionBody.hpp"
 
-
+/**
+ * This interface allows to modify camera position and rotation of system visualisation
+ */
 class NPSCam
 {
 public:
@@ -16,11 +18,37 @@ public:
         FloatCoord<3> look_at = FloatCoord<3>(5, 10, 20),
         FloatCoord<2> right = FloatCoord<2>(16, 9));
 
+    /**
+     * @return camera position
+     */
     const FloatCoord<3> &getLocation() const;
+
+    /**
+     * set camera position
+     * @param location new camera position
+     */
     void setLocation(const FloatCoord<3> &location);
+
+    /**
+     * @return the point at which the camera is aimed
+     */
     const FloatCoord<3> &getLook_at() const;
+
+    /**
+     * set the point at which camera is aimed
+     * @param look_at
+     */
     void setLook_at(const FloatCoord<3> &look_at);
+
+    /**
+     * @return aspect ratio
+     */
     const FloatCoord<2> &getRight() const;
+
+    /**
+     * set aspect ratio
+     * @param right
+     */
     void setRight(const FloatCoord<2> &right);
 
 private:

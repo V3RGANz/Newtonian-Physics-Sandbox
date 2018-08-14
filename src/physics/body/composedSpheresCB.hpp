@@ -11,6 +11,9 @@
 //!!! FIXME
 #define DELTA_T 0.1
 
+/**
+ * This class defines physical body which can be composed from spheres
+ */
 class ComposedSpheresCB: public CollisionBody
 {
 public:
@@ -106,14 +109,23 @@ public:
         }
         if (version == 1003 || version == 1004) {
             std::cout << " HOOD SIZE = " << i << "\n";
+            std::cout << " velocity = " << velocity << "\n";
         }
         applyVelocity();
         applyAngularVelocity();
 
-//        position = nextPosition;
         position += velocity * DELTA_T;
-//        spheres.back().pos = nextPosition;
-        spheres.back().pos += velocity * DELTA_T;
+        for (auto& sphere : spheres)
+            sphere.pos += velocity * DELTA_T;
+
+        for (auto& sphere : spheres) {
+            FloatCoord<3> relativePos = sphere.pos - position;
+            FloatCoord<3> newRelativePos = angularVelocity * relativePos * DELTA_T;
+            sphere.pos = newRelativePos + position;
+        }
+
+        boundingObjectTree.rotate(angularVelocity * DELTA_T);
+
 //        if (i!= 1) {
 //            std::cout << "shift: " << position - oldposition << "\n";
 //            std::cout << "velocity shift: " << velocity - oldvelocity << "\n";
@@ -125,8 +137,10 @@ public:
 ////    }
     }
 
-    inline void updatePosition() {
-        position = nextPosition;
+    inline void updatePosition()
+    {
+//        for (auto& sphere : spheres){
+//        }
     }
 
     inline void applyVelocity()
@@ -165,7 +179,6 @@ private:
     Matrix<3, 3>            orientation     = Matrix<3, 3>(FloatCoord<3>(1,1,1));
     POVRayTexture           povRayTexture   = POVRayTexture();
     InertiaTensor<3, 3>     inertialTensor;
-    FloatCoord<3>           nextPosition;
     FloatCoord<3>           deltaV;
     AngularVTensor<3, 3>    deltaW;
     int                     id;

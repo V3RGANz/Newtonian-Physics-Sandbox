@@ -20,6 +20,8 @@ public:
 
     void updatePosition(FloatCoord<3> externalBodyPos) override;
 
+    FloatCoord<3> getPosition() const override;
+
     inline double getX() const{
         return axes[0];
     }
@@ -55,7 +57,7 @@ public:
     inline bool empty() const {
         return axes[0] == 0 && axes[1] == 0 && axes[2] == 0;
     }
-
+    void rotate(AngularVTensor<3, 3> dW) override;
 
 private:
     FloatCoord<3> axes;

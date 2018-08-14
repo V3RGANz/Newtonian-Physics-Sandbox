@@ -166,25 +166,73 @@ class POVRayNORMAL_MODIFIERS
 //TODO
 };
 
+/**
+ * class that defines texture of object using POVRay
+ */
 class POVRayTexture
 {
 public:
+    /**
+     * set pigment, normal and finish by strings
+     * @param pigment
+     * @param normal
+     * @param finish
+     */
     POVRayTexture(const std::string &pigment = "color White",
                   const std::string &normal = "",
                   const std::string &finish = "phong 0.9 metallic");
     POVRayTexture(const POVRayTexture& other);
-    void setPigment(int);
-    void setPigment(POVRayColor);
-    void setPigment(POVRayPattern);
-    void setPigment(LibGeoDecomp::Coord<3>, double transparensy = 1);
-    void setPigment(LibGeoDecomp::FloatCoord<3>, double transparensy = 1);
+
+    /**
+     * set pigment by POVRay id of it
+     * @param pigmentID
+     */
+    void setPigment(int pigmentID);
+
+    /**
+     * set pigment by its POVRay name
+     * @param color
+     */
+    void setPigment(POVRayColor color);
+
+    /**
+     * set pattern by its POVRay name
+     * @param pattern
+     */
+    void setPigment(POVRayPattern pattern);
+
+    /**
+     * set pattern by RGB color model
+     * @param RGB red, green, blue channels from 0 to 255
+     * @param transparency set object transparency
+     */
+    void setPigment(LibGeoDecomp::Coord<3> RGB, double transparency = 1);
+
+    /**
+     * set pattern by RGB color model
+     * @param RGB red, green, blue channels from 0 to 1
+     * @param transparency set object transparency
+     */
+    void setPigment(LibGeoDecomp::FloatCoord<3> RGB, double transparency = 1);
+
+    /**
+     * set POVRay texture by string manyally
+     */
     void setManually(const std::string &);
 
-    void setNormal(const std::string &);
+    /**
+     * set normal by string
+     * @param normal
+     */
+    void setNormal(const std::string &normal);
     //TODO
     void setNormal(POVRayNORMAL_IDENTIFIER, POVRayNORMAL_TYPE, POVRayNORMAL_MODIFIERS);
 
-    void setFinish(const std::string &);
+    /**
+     * set finish by string
+     * @param finish
+     */
+    void setFinish(const std::string &finish);
     friend std::ostream &operator<<(std::ostream &, const POVRayTexture &);
 private:
     bool manual = false;

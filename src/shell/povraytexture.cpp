@@ -14,12 +14,12 @@ void POVRayTexture::setPigment(POVRayPattern pattern)
     pigment = POVRayPatternMap[static_cast<int>(pattern)];
 }
 
-void POVRayTexture::setPigment(LibGeoDecomp::Coord<3> RGB, double transparensy)
+void POVRayTexture::setPigment(LibGeoDecomp::Coord<3> RGB, double transparency)
 {
-    setPigment(LibGeoDecomp::FloatCoord<3>(RGB) / 256, transparensy);
+    setPigment(LibGeoDecomp::FloatCoord<3>(RGB) / 256, transparency);
 }
 
-void POVRayTexture::setPigment(LibGeoDecomp::FloatCoord<3> RGB, double transparensy)
+void POVRayTexture::setPigment(LibGeoDecomp::FloatCoord<3> RGB, double transparency)
 {
     for (int i = 0; i < 3; ++i) {
         if (RGB[i] < 0)
@@ -28,10 +28,10 @@ void POVRayTexture::setPigment(LibGeoDecomp::FloatCoord<3> RGB, double transpare
             RGB[i] = 1;
     }
 
-    if (transparensy < 0)
-        transparensy = 0;
-    else if (transparensy > 1)
-        transparensy = 1;
+    if (transparency < 0)
+        transparency = 0;
+    else if (transparency > 1)
+        transparency = 1;
 
 
     pigment = "color rgbf<" + std::to_string(RGB[0]), +"," + std::to_string(RGB[1]), +","

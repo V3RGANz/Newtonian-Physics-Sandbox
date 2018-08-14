@@ -12,9 +12,17 @@ public:
     virtual std::list<ComposedSpheresCB> getObjects() = 0;
 };
 
+//TODO: set names for bodies to allow modify them
+/**
+ * This interface allows to load scene from .obj file. Ignores all except spheres
+ */
 class SimpleOBJSpheresImporter: public NPSImporter
 {
 public:
+    /**
+     * Load scene from .obj file. Ignores all except spheres
+     * @param filepath path to .obj file
+     */
     void import(std::string filepath) override;
 private:
     std::list<ComposedSpheresCB> importedObjects;
