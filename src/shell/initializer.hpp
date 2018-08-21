@@ -10,7 +10,7 @@ class NPSInitializer : public SimpleInitializer<NPSCell>
 {
 public:
 
-    NPSInitializer(const Coord<3>& dimensions, unsigned steps);
+    NPSInitializer(const Coord<3>& dimensions, unsigned steps, const Coord<3>& cellSize);
 
     void grid(GridBase<NPSCell, 3>* target) override;
 
@@ -30,6 +30,7 @@ public:
 
 private:
     Coord<3> dimensions;
+    FloatCoord<3> cellSize;
     std::map<Coord<3>, NPSCell > cellsFilling;
     std::vector<ComposedSpheresCB> collisionBodies;
 };

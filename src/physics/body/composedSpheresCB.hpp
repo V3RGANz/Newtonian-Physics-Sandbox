@@ -93,23 +93,11 @@ public:
         //FIXME: redundant update of boundingObjectTree
         //It'd be good to update-on-use, but we have constant copy
         //It's not a big problem to optimize, but left for later work
-        version++;
-        boundingObjectTree.updateBoundingsPositions(position);
-        if (version == 1003 || version == 1004){
-            std::cout << "version = " << version <<"id = " << id << "pos = " << position << " ";
-        }
-
-
-        FloatCoord<3> oldposition = position;
-        FloatCoord<3> oldvelocity = velocity;
+//        version++;
         int i = 0;
         for (auto& collisionBody : hood){
-            ++i;
+//            ++i;
             detectCollision(collisionBody);
-        }
-        if (version == 1003 || version == 1004) {
-            std::cout << " HOOD SIZE = " << i << "\n";
-            std::cout << " velocity = " << velocity << "\n";
         }
         applyVelocity();
         applyAngularVelocity();
@@ -123,18 +111,8 @@ public:
             FloatCoord<3> newRelativePos = angularVelocity * relativePos * DELTA_T;
             sphere.pos = newRelativePos + position;
         }
-
         boundingObjectTree.rotate(angularVelocity * DELTA_T);
-
-//        if (i!= 1) {
-//            std::cout << "shift: " << position - oldposition << "\n";
-//            std::cout << "velocity shift: " << velocity - oldvelocity << "\n";
-//        }
-//        std::cout << *this << "\n";
-
-////    for (auto& collision : currentCollisions){
-////        CollisionResolve collisionResolve(collision);
-////    }
+        boundingObjectTree.updateBoundingsPositions(position);
     }
 
     inline void updatePosition()

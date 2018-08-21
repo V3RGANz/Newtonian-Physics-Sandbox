@@ -149,10 +149,13 @@ public:
      * set cell size
      * @param size
      */
+    void setCellSize(const Coord<3> &size);
+
     void setWorldSize(const Coord<3> &size);
 private:
-    static constexpr int steps = 1000;
+    static constexpr int steps = 2000;
     void compareBox(const CollisionBody &body);
+    void compareWorldSize(const CollisionBody &body);
 
     //FIXME: HARDCODED
     NPSWriter *npsWriter = new NPSWriter("nps_sim", 50);
@@ -161,7 +164,8 @@ private:
     std::map<std::string, BodiesGroup*> bodiesGroups;
     std::map<std::string, BodiesGroup> Groups;
     NPSInitializer *npsInitializer = nullptr;
-    Coord<3> size;
+    Coord<3> cellSize = Coord<3>(0);
+    Coord<3> worldSize = Coord<3>(0);
     int count = 0;
 };
 

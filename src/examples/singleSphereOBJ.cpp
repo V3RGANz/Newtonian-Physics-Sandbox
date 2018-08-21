@@ -11,7 +11,7 @@ int main() {
     auto cbody = spheresImporter.getObjects().front();
     std::cout << "Sphere" + std::to_string(index) << "\n";
     auto list = spheresImporter.getObjects();
-    std::cout << "list.size()" << list.size() << "\n";
+    std::cout << "list.cellSize()" << list.size() << "\n";
     std::cout << list.front() << "\n";
 
     for (const auto &sphere : list) {

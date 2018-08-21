@@ -34,9 +34,7 @@ bool CollisionDetection::
 detectCollision<BoundingSphere, BoundingSphere>(BoundingSphere &first, const BoundingSphere &second)
 {
     FloatCoord<3> relativeVector = (first.getPosition() - second.getPosition());
-
-//    std::cout << "detecting collision...: pos1: " << first.getPosition() << " pos2: " << second.getPosition() << "\n";
-    if (relativeVector.length() == 0){
+    if (relativeVector.length() == 0) {
         body1CollisionPoint = first.getPosition();
         body2CollisionPoint = first.getPosition();
         return true;

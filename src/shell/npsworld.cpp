@@ -5,21 +5,28 @@ void NPSWorld::start()
         compareBox(body.second);
     }
 
-    if (size == Coord<3>(0)) {
-        size = Coord<3>(maxBoundingBox + FloatCoord<3>(1, 1, 1)) * 2;
+    if (cellSize == Coord<3>(0)) {
+        cellSize = Coord<3>(maxBoundingBox + FloatCoord<3>(1, 1, 1)) * 2;
     }
-    else if (maxBoundingBox < size) {
-        std::cout << "World size is too small. "
+    else if (maxBoundingBox < cellSize) {
+        std::cout << "World cellSize is too small. "
                      "Try to don't change it, "
                      "then it will be calculated automatically.\n";
-        std::cout << "current : " << size
+        std::cout << "current : " << cellSize
                   << "required no smaller than: "
                   << maxBoundingBox << std::endl;
         return;
     }
 
-    std::cout << "world size: " << size << "\n\n";
-    npsInitializer = new NPSInitializer(size, steps);
+    std::cout << "cell size: " << cellSize << "\n\n";
+
+    for (auto &body : bodies) {
+        compareWorldSize(body.second);
+    }
+
+    std::cout << "world size: " << worldSize << "\n\n";
+
+    npsInitializer = new NPSInitializer(worldSize, steps, cellSize);
 
     for (auto &group : Groups) {
         for (auto &body : group.second.bodies) {
@@ -117,9 +124,22 @@ NPSWorld::addToGroup(const std::string &bodyName, const std::string &groupName, 
     bodiesGroups[bodyName] = &group;
     group.addBody(&body);
 }
+void NPSWorld::setCellSize(const Coord<3> &size)
+{
+    cellSize = size;
+}
 void NPSWorld::setWorldSize(const Coord<3> &size)
 {
-    NPSWorld::size = size;
+    worldSize = size;
+}
+void NPSWorld::compareWorldSize(const CollisionBody &body)
+{
+    for (int i = 0; i < 3; ++i) {
+        std::cout << "check if " << static_cast<int>(2 * (body.getPos()[i] / cellSize[i] + 1))
+                                 << " > " << worldSize[i] << "\n";
+        if (static_cast<int>(2 * (body.getPos()[i] / cellSize[i] + 1)) > worldSize[i])
+            worldSize[i] = static_cast<int>(2 * (body.getPos()[i] / cellSize[i] + 1));
+    }
 }
 void NPSWorld::BodiesGroup::addBody(ComposedSpheresCB *collisionBody)
 {

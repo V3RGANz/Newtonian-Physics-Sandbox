@@ -13,13 +13,13 @@ int main()
              {FloatCoord<3>(4,0,0), 0.5}
         }},
         ComposedSpheresCB{{
-             {FloatCoord<3>(6.1,0,0), 0.5}
+             {FloatCoord<3>(5,0,0), 0.5}
         }},
         ComposedSpheresCB{{
-             {FloatCoord<3>(8.2,0,0), 0.5}
+             {FloatCoord<3>(6,0,0), 0.5}
         }},
         ComposedSpheresCB{{
-             {FloatCoord<3>(10.3,0,0), 0.5}
+             {FloatCoord<3>(7,0,0), 0.5}
         }}
     };
 
@@ -28,13 +28,13 @@ int main()
 
     NPSWorld npsWorld;
 
-//    for (int i = 0; i < 5; ++i) {
-//        npsWorld.addBody("sphere" + std::to_string(i), spheres[i]);
-//    }
+    for (int i = 0; i < 5; ++i) {
+        npsWorld.addBody("sphere" + std::to_string(i), spheres[i]);
+    }
 
-    npsWorld.addBody("sphere0", spheres[0]);
-    npsWorld.addBody("sphere2", spheres[1]);
-    npsWorld.addBody("sphere4", spheres[4]);
+//    npsWorld.addBody("sphere0", spheres[0]);
+//    npsWorld.addBody("sphere2", spheres[1]);
+//    npsWorld.addBody("sphere4", spheres[4]);
 
     npsWorld.changeBodyGroup("sphere0", "active");
     npsWorld.changeBodyGroup("sphere4", "active");

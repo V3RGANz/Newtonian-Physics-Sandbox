@@ -94,8 +94,8 @@ private:
                                                    collisionDetection.getSecondCollision(),
                                                    boundingObjectTree11.getBoundingObject().getPosition(),
                                                    boundingObjectTree21.getBoundingObject().getPosition());
-                    firstCollisionPoints.push_back(collisionDetection.getFirstCollision());
-                    secondCollisionPoints.push_back(collisionDetection.getSecondCollision());
+//                    firstCollisionPoints.push_back(collisionDetection.getFirstCollision());
+//                    secondCollisionPoints.push_back(collisionDetection.getSecondCollision());
                     return;
                 }
                 else {
@@ -142,8 +142,8 @@ private:
                                                collisionDetection.getSecondCollision(),
                                                boundingObject1.getPosition(),
                                                boundingObjectTree21.getBoundingObject().getPosition());
-                firstCollisionPoints.push_back(collisionDetection.getFirstCollision());
-                secondCollisionPoints.push_back(collisionDetection.getSecondCollision());
+//                firstCollisionPoints.push_back(collisionDetection.getFirstCollision());
+//                secondCollisionPoints.push_back(collisionDetection.getSecondCollision());
                 return;
             }
             else {
@@ -170,8 +170,8 @@ private:
                                                collisionDetection.getSecondCollision(),
                                                boundingObjectTree11.getBoundingObject().getPosition(),
                                                boundingObject2.getPosition());
-                firstCollisionPoints.push_back(collisionDetection.getFirstCollision());
-                secondCollisionPoints.push_back(collisionDetection.getSecondCollision());
+//                firstCollisionPoints.push_back(collisionDetection.getFirstCollision());
+//                secondCollisionPoints.push_back(collisionDetection.getSecondCollision());
                 return;
             }
             else {

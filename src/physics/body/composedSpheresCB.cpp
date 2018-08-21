@@ -65,10 +65,6 @@ void ComposedSpheresCB::detectCollision(const ComposedSpheresCB &cBody)
 {
     if (position == cBody.getPos())
         return;
-//    if (collisionDetection(spheres.back(), cBody.spheres.back())) {
-//        Collision current = {*this, cBody, position - cBody.position, cBody.position - position};
-//        CollisionResolve collisionResolve(current);
-//    }
     CollisionTreeDetection<BoundingSphere, BoundingSphere> collisionTreeDetection(boundingObjectTree,
                                                   cBody.getBoundingObjectTree());
     collisionTreeDetection.search(position, cBody.getPos());
